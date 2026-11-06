@@ -1,0 +1,147 @@
+- const { use, lazyload } = theme.comments
+- const { repo, repo_id, category_id, light_theme, dark_theme, js, option } = theme.giscus
+- const giscusUrl = js || 'https://giscus.app/client.js'
+- const giscusOriginUrl = new URL(giscusUrl).origin
+- const liquidGiscus = ((theme.liquid && theme.liquid.comments && theme.liquid.comments.giscus) || {})
+- const giscusTexts = { loading: liquidGiscus.loading_text || _p('liquid.comments.loading'), error: liquidGiscus.error_text || _p('liquid.comments.error'), retry: liquidGiscus.retry_text || _p('liquid.comments.retry') }
+
+script.
+  (() => {
+    const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+    const option = !{JSON.stringify(option)}
+    const siteRoot = !{JSON.stringify(config.root)}
+    const texts = !{JSON.stringify(giscusTexts)}
+
+    // PJAX can execute this script before location.pathname changes. The new
+    // page's canonical link has already been swapped at that point.
+    const getPathnameTerm = () => {
+      const canonical = document.querySelector('link[rel="canonical"]')
+      const url = canonical ? new URL(canonical.href, location.href) : new URL(location.href)
+      const pathname = (url.origin === location.origin ? url.pathname : location.pathname).replace(/\/index\.html$/, '/')
+      const relative = pathname.startsWith(siteRoot) ? '/' + pathname.slice(siteRoot.length) : pathname
+      return relative.length < 2 ? 'index' : relative.slice(1).replace(/\.\w+$/, '')
+    }
+
+    const getGiscusTheme = theme => theme === 'dark' ? '!{dark_theme}' : '!{light_theme}'
+
+    const createScriptElement = config => {
+      const ele = document.createElement('script')
+      Object.entries(config).forEach(([key, value]) => {
+        ele.setAttribute(key, value)
+      })
+      return ele
+    }
+
+    const loadGiscus = (el = document, key) => {
+      const mappingConfig = isShuoshuo
+        ? { 'data-mapping': 'specific', 'data-term': key }
+        : (!option || !option['data-mapping'] || option['data-mapping'] === 'pathname')
+          ? { 'data-mapping': 'specific', 'data-term': getPathnameTerm() }
+          : { 'data-mapping': option['data-mapping'] }
+
+      const giscusConfig = {
+        src: '!{giscusUrl}',
+        'data-repo': '!{repo}',
+        'data-repo-id': '!{repo_id}',
+        'data-category-id': '!{category_id}',
+        'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+        'data-reactions-enabled': '1',
+        crossorigin: 'anonymous',
+        async: true,
+        ...option,
+        ...mappingConfig
+      }
+
+      const wrap = el.querySelector('#giscus-wrap')
+      if (!wrap || wrap.dataset.giscusStarted === 'true') return
+      wrap.dataset.giscusStarted = 'true'
+      let attempts = 0
+      let timer
+      const message = document.createElement('div')
+      message.className = 'giscus-load-message'
+      message.setAttribute('role', 'status')
+      message.textContent = texts.loading
+      wrap.appendChild(message)
+
+      const retry = () => {
+        if (!wrap.isConnected) return
+        clearTimeout(timer)
+        wrap.querySelectorAll('script, .giscus').forEach(node => node.remove())
+        message.replaceChildren(document.createTextNode(texts.error))
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.textContent = texts.retry
+        button.addEventListener('click', () => { attempts = 0; start() })
+        message.appendChild(button)
+      }
+      const start = () => {
+        if (!wrap.isConnected) return
+        clearTimeout(timer)
+        wrap.querySelectorAll('script, .giscus').forEach(node => node.remove())
+        attempts++
+        message.textContent = texts.loading
+        const scriptElement = createScriptElement(giscusConfig)
+        scriptElement.onerror = () => {
+          clearTimeout(timer)
+          if (attempts < 2) timer = setTimeout(start, 1500)
+          else retry()
+        }
+        wrap.appendChild(scriptElement)
+        timer = setTimeout(() => {
+          if (!wrap.isConnected) return
+          const frame = wrap.querySelector('iframe.giscus-frame')
+          if (frame && !frame.classList.contains('giscus-frame--loading')) {
+            message.remove()
+          } else if (attempts < 2) {
+            start()
+          } else {
+            retry()
+          }
+        }, 20000)
+        scriptElement.onload = () => {
+          const frame = wrap.querySelector('iframe.giscus-frame')
+          if (frame) frame.addEventListener('load', () => { clearTimeout(timer); message.remove() }, { once: true })
+        }
+      }
+      start()
+
+      if (isShuoshuo) {
+        window.shuoshuoComment.destroyGiscus = () => {
+          if (el.children.length) {
+            el.innerHTML = ''
+            el.classList.add('no-comment')
+          }
+        }
+      }
+    }
+
+    const changeGiscusTheme = theme => {
+      const iframe = document.querySelector('#giscus-wrap iframe')
+      if (iframe) {
+        const message = {
+          giscus: {
+            setConfig: {
+              theme: getGiscusTheme(theme)
+            }
+          }
+        }
+        iframe.contentWindow.postMessage(message, '!{giscusOriginUrl}')
+      }
+    }
+
+    btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+    if (isShuoshuo) {
+      '!{use[0]}' === 'Giscus'
+        ? window.shuoshuoComment = { loadComment: loadGiscus }
+        : window.loadOtherComment = loadGiscus
+      return
+    }
+
+    if ('!{use[0]}' === 'Giscus' || !!{lazyload}) {
+      if (!{lazyload}) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+      else setTimeout(loadGiscus, 0)
+    } else {
+      window.loadOtherComment = loadGiscus
+    }
+  })()

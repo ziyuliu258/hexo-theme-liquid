@@ -1,0 +1,83 @@
+-
+  const titleVal = pageTitle.replace(/'/ig,"\\'")
+
+  let isHighlightShrink
+  if (theme.code_blocks.shrink == 'none') isHighlightShrink = 'undefined'
+  else if (typeof page.highlight_shrink == 'boolean') isHighlightShrink = page.highlight_shrink
+  else isHighlightShrink = theme.code_blocks.shrink
+
+  var showToc = false
+  if (theme.aside.enable && page.aside !== false) {
+    let tocEnable = false
+    if (globalPageType === 'post' && theme.toc.post) tocEnable = true
+    else if (globalPageType === 'page' && theme.toc.page) tocEnable = true
+    const pageToc = typeof page.toc === 'boolean' ? page.toc : tocEnable
+    showToc = pageToc && (toc(page.content) !== '' || page.encrypt === true)
+  }
+
+  const liquid = theme.liquid || {}
+  const liquidGlass = liquid.glass || {}
+  const liquidStats = liquid_stats()
+  const liquidMusic = liquid_music()
+  const liquidComments = liquid_comments()
+  const liquidGiscus = (liquidComments.giscus || {})
+  const liquidRuntime = {
+    glass: {
+      enable: liquidGlass.enable !== false,
+      refraction: liquidGlass.refraction !== false
+    },
+    stats: {
+      enable: liquidStats.enable,
+      api: liquidStats.api,
+      siteUv: liquidStats.siteUv,
+      sitePv: liquidStats.sitePv,
+      pagePv: liquidStats.pagePv,
+      note: liquidStats.note || _p('liquid.statistics.note'),
+      local: _p('liquid.statistics.local'),
+      loading: _p('liquid.statistics.loading'),
+      error: _p('liquid.statistics.error')
+    },
+    music: {
+      enable: liquidMusic.enable,
+      pageUrl: url_for(liquidMusic.pagePath),
+      playlistUrl: url_for(liquidMusic.playlistPath),
+      i18n: {
+        dockLabel: _p('liquid.music.dock_label'),
+        expand: _p('liquid.music.expand'),
+        collapse: _p('liquid.music.collapse'),
+        collapseShort: _p('liquid.music.collapse_short'),
+        previous: _p('liquid.music.previous'),
+        next: _p('liquid.music.next'),
+        play: _p('liquid.music.play'),
+        pause: _p('liquid.music.pause'),
+        volume: _p('liquid.music.volume'),
+        seek: _p('liquid.music.seek'),
+        playlist: _p('liquid.music.playlist'),
+        title: _p('liquid.music.title'),
+        loading: _p('liquid.music.loading'),
+        selectTrack: _p('liquid.music.select_track'),
+        playFailed: _p('liquid.music.play_failed'),
+        preview: _p('liquid.music.preview'),
+        trackFailed: _p('liquid.music.track_failed'),
+        emptyPlaylist: _p('liquid.music.empty_playlist'),
+        loadFailed: _p('liquid.music.load_failed')
+      }
+    },
+    comments: {
+      giscus: {
+        loading: liquidGiscus.loading_text || _p('liquid.comments.loading'),
+        error: liquidGiscus.error_text || _p('liquid.comments.error'),
+        retry: liquidGiscus.retry_text || _p('liquid.comments.retry')
+      }
+    }
+  }
+-
+
+script#config-diff.
+  var GLOBAL_CONFIG_SITE = {
+    title: '!{titleVal}',
+    isHighlightShrink: !{isHighlightShrink},
+    isToc: !{showToc},
+    pageType: '!{page.type == 'shuoshuo' ? 'shuoshuo' : globalPageType}',
+    liquid: !{JSON.stringify(liquidRuntime)}
+  }

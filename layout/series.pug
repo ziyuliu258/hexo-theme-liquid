@@ -1,0 +1,35 @@
+extends includes/layout.pug
+
+block content
+  - const seriesCfg = liquid_series()
+  - const seriesCount = page.post_count || (page.posts && (page.posts.length || (page.posts.data && page.posts.data.length))) || 0
+  if page.series_name
+    #page
+      if top_img === false && page.title
+        .page-title= page.title
+      #article-container.series-content
+        p.series-intro= _p('liquid.series.count').replace('{count}', seriesCount)
+        ol.series-reading-list
+          each post in page.posts
+            li
+              a(href=url_for(post.path))= post.title || _p('no_title')
+              time(datetime=date_xml(post.date))= date(post.date, config.date_format)
+        p
+          a(href=url_for(seriesCfg.path))= seriesCfg.moreText || _p('liquid.series.all')
+  else
+    #recent-posts.recent-posts.series-directory.nc
+      if top_img === false && page.title
+        h1.page-title= page.title
+      else if top_img === false
+        h1.page-title= seriesCfg.title || _p('liquid.series.title')
+      .recent-post-items
+        if page.series_catalog.length
+          each item in page.series_catalog
+            a.recent-post-item.series-directory-item(href=url_for(item.path) title=item.name)
+              .recent-post-info.no-cover
+                span.article-title.series-directory-name= item.name
+                .article-meta-wrap.series-directory-count= `${item.posts.length} ${_p('liquid.series.post_count_unit')}`
+        else
+          .recent-post-item
+            .recent-post-info.no-cover
+              p= _p('liquid.series.empty')

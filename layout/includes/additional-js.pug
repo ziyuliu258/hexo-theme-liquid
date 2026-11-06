@@ -1,0 +1,76 @@
+- const liquidJsConfig = theme.liquid || {}
+- const liquidJsGlass = liquidJsConfig.glass || {}
+- const liquidJsMotion = liquidJsConfig.aside_motion || {}
+- const liquidJsStats = liquid_stats()
+- const liquidJsMusic = liquid_music()
+div
+  script(src=url_for(theme.asset.utils))
+  script(src=url_for(theme.asset.main))
+  if liquidJsConfig.enable !== false && liquidJsGlass.enable !== false
+    script(defer src=url_for("js/liquid-glass.js") + "?v=" + liquid_asset_version("js/liquid-glass.js"))
+  if liquidJsConfig.enable !== false && liquidJsMotion.enable !== false
+    script(defer src=url_for("js/aside-motion.js") + "?v=" + liquid_asset_version("js/aside-motion.js"))
+
+  if theme.translate.enable
+    script(src=url_for(theme.asset.translate))
+
+  if theme.lightbox
+    script(src=url_for(theme.asset[theme.lightbox]))
+
+  if theme.instantpage
+    script(src=url_for(theme.asset.instantpage), type='module')
+
+  if theme.lazyload.enable && !theme.lazyload.native
+    script(src=url_for(theme.asset.lazyload))
+
+  if theme.snackbar.enable
+    script(src=url_for(theme.asset.snackbar))
+
+  .js-pjax
+    if needLoadCountJs
+      != partial("includes/third-party/card-post-count/index", {}, { cache: true })
+
+    if loadSubJs
+      include ./third-party/subtitle.pug
+
+    include ./third-party/math/index.pug
+    include ./third-party/abcjs/index.pug
+
+    if commentsJsLoad
+      include ./third-party/comments/js.pug
+
+  != partial("includes/third-party/prismjs", {}, { cache: true })
+
+  if theme.aside.enable && theme.aside.card_newest_comments.enable
+    if theme.pjax.enable || (globalPageType !== 'post' && page.aside !== false)
+      != partial("includes/third-party/newest-comments/index", {}, { cache: true })
+
+  != fragment_cache('injectBottom', function(){return injectHtml(theme.inject.bottom)})
+
+  != partial("includes/third-party/effect", {}, { cache: true })
+  != partial("includes/third-party/chat/index", {}, { cache: true })
+
+  if theme.aplayerInject && theme.aplayerInject.enable
+    if theme.pjax.enable || theme.aplayerInject.per_page || page.aplayer
+      include ./third-party/aplayer.pug
+
+  if theme.pjax.enable
+    != partial("includes/third-party/pjax", {}, { cache: true })
+
+  if theme.umami_analytics.enable
+    != partial("includes/third-party/umami_analytics", {}, { cache: true })
+
+  if liquidJsStats.enable && (liquidJsStats.siteUv || liquidJsStats.sitePv || liquidJsStats.pagePv)
+    if liquidJsStats.api
+      script(defer src=url_for("js/site-statistics.js") + "?v=" + liquid_asset_version("js/site-statistics.js"))
+    else
+      //- Legacy compatibility: no custom API means the official busuanzi service.
+      script(async data-pjax src=theme.asset.busuanzi || '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js')
+
+  if liquidJsConfig.enable !== false && liquidJsMusic.enable
+    script(defer src=url_for("js/music-player.js") + "?v=" + liquid_asset_version("js/music-player.js"))
+
+  each liquidJs in (liquidJsConfig.assets && liquidJsConfig.assets.js || [])
+    script(defer src=url_for(liquidJs))
+
+  != partial('includes/third-party/search/index', {}, { cache: true })

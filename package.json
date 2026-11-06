@@ -1,0 +1,37 @@
+{
+  "name": "hexo-theme-liquid",
+  "version": "1.0.0",
+  "description": "A liquid-glass Hexo theme with series pages, a music dock, and visitor statistics.",
+  "main": "package.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hexo",
+    "theme",
+    "liquid",
+    "liquid-glass",
+    "card-ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ziyuliu258/hexo-theme-liquid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ziyuliu258/hexo-theme-liquid/issues"
+  },
+  "homepage": "https://github.com/ziyuliu258/hexo-theme-liquid#readme",
+  "author": "Derrick Liu",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "hexo-front-matter": "^4.2.1",
+    "hexo-renderer-pug": "^3.0.0",
+    "hexo-renderer-stylus": "^3.0.1",
+    "hexo-util": "^3.3.0",
+    "katex": "^0.16.21"
+  }
+}

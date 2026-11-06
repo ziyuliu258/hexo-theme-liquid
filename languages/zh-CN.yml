@@ -1,0 +1,163 @@
+footer:
+  framework: 框架
+  theme: 主题
+
+copy:
+  success: 复制成功
+  error: 复制失败
+  noSupport: 浏览器不支持
+
+page:
+  articles: 全部文章
+  tag: 标签
+  category: 分类
+  archives: 归档
+
+card_post_count: 条评论
+
+no_title: 无标题
+
+post:
+  created: 发表于
+  updated: 更新于
+  wordcount: 总字数
+  min2read: 阅读时长
+  min2read_unit: 分钟
+  page_pv: 浏览量
+  comments: 评论数
+  copyright:
+    author: 文章作者
+    link: 文章链接
+    copyright_notice: 版权声明
+    copyright_content: '本博客所有文章除特别声明外，均采用
+      <a href="%s" target="_blank">%s</a> 许可协议。转载请注明来源 <a href="%s" target="_blank">%s</a>！'
+  recommend: 相关推荐
+  edit: 编辑
+
+search:
+  title: 搜索
+  load_data: 数据加载中
+  input_placeholder: 搜索文章
+  algolia_search:
+    hits_empty: '未找到符合您查询的内容：${query}'
+    hits_stats: '找到 ${hits} 条结果，耗时 ${time} 毫秒'
+  local_search:
+    hits_empty: '未找到符合您查询的内容：${query}'
+    hits_stats: '共找到 ${hits} 篇文章'
+
+pagination:
+  prev: 上一篇
+  next: 下一篇
+
+comment: 评论
+
+aside:
+  articles: 文章
+  tags: 标签
+  categories: 分类
+  card_announcement: 公告
+  card_categories: 分类
+  card_tags: 标签
+  card_archives: 归档
+  card_recent_post: 最新文章
+  card_webinfo:
+    headline: 网站信息
+    article_name: 文章数目
+    runtime:
+      name: 运行时间
+      unit: 天
+    last_push_date:
+      name: 最后更新时间
+    site_wordcount: 本站总字数
+    site_uv_name: 本站访客数
+    site_pv_name: 本站总浏览量
+  more_button: 查看更多
+  card_newest_comments:
+    headline: 最新评论
+    loading_text: 加载中...
+    error: 无法获取评论，请确认相关配置是否正确
+    zero: 暂无评论
+    image: 图片
+    link: 链接
+    code: 代码
+  card_toc: 目录
+  card_post_series: 系列文章
+
+date_suffix:
+  just: 刚刚
+  min: 分钟前
+  hour: 小时前
+  day: 天前
+  month: 个月前
+
+donate: 赞助
+share: 分享
+
+rightside:
+  readmode_title: 阅读模式
+  translate_title: 简繁转换
+  night_mode_title: 日间和夜间模式切换
+  back_to_top: 回到顶部
+  toc: 目录
+  scroll_to_comment: 前往评论
+  setting: 设置
+  aside: 单栏和双栏切换
+  chat: 聊天
+
+copy_copyright:
+  author: 作者
+  link: 链接
+  source: 来源
+  info: 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+Snackbar:
+  chs_to_cht: 已切换为繁体中文
+  cht_to_chs: 已切换为简体中文
+  day_to_night: 已切换为深色模式
+  night_to_day: 已切换为浅色模式
+
+loading: 加载中...
+load_more: 加载更多
+
+error404: 页面未找到
+
+liquid:
+  announcement_label: 公告
+  series:
+    title: 专栏
+    all: 查看全部专栏
+    count: 共 {count} 篇文章，按发布时间排列。
+    post_count_unit: 篇
+    empty: 还没有专栏文章。
+  statistics:
+    note: 新统计服务从启用时开始计数
+    local: 本地预览不计入访问统计
+    loading: 正在获取统计数据
+    error: 统计暂时不可用，刷新页面后重试
+  comments:
+    loading: 评论区加载中…
+    error: 评论区暂时无法加载。
+    retry: 重试
+  music:
+    dock_label: 全局音乐播放器
+    expand: 展开音乐播放器
+    collapse: 收起音乐播放器
+    collapse_short: 收起
+    previous: 上一首
+    next: 下一首
+    play: 播放
+    pause: 暂停
+    volume: 音量
+    seek: 播放进度
+    playlist: 歌单
+    title: 音乐
+    open_playlist: 在网易云打开歌单
+    now_playing: 正在收听
+    lyrics: 歌词
+    loading: 正在加载歌单…
+    select_track: 请选择歌曲
+    play_failed: 暂时无法播放，请在网易云收听。
+    preview: 此曲仅提供试听。
+    track_failed: 这首歌暂时无法播放，请在网易云收听。
+    empty_playlist: 当前歌单暂无可直接播放的歌曲，请在网易云收听。
+    load_failed: 歌单加载失败，请稍后刷新页面重试。

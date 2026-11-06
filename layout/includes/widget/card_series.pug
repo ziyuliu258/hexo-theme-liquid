@@ -1,0 +1,15 @@
+if theme.aside.card_series && theme.aside.card_series.enable
+  - const seriesList = series_catalog()
+  - const seriesCfg = liquid_series()
+  if seriesList.length
+    .card-widget.card-series
+      .item-headline
+        i.fa-solid.fa-book-open
+        span= seriesCfg.title || theme.aside.card_series.title || _p('liquid.series.title')
+        a.card-series-all(href=url_for(seriesCfg.path) aria-label=_p('liquid.series.all') title=_p('liquid.series.all'))
+          i.fa-solid.fa-angle-right
+      .series-card-list
+        each item in seriesList
+          a.series-card-item(href=url_for(item.path) title=item.name)
+            span.series-card-name= item.name
+            span.series-card-count= `${item.posts.length} ${_p('liquid.series.post_count_unit')}`
