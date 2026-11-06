@@ -1,7 +1,7 @@
 {
   "name": "hexo-theme-liquid",
   "version": "1.0.0",
-  "description": "A liquid-glass Hexo theme with series pages, a music dock, and visitor statistics.",
+  "description": "A liquid-glass Hexo theme based on Hexo Butterfly, with series pages, a music dock, and visitor statistics.",
   "main": "package.json",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,8 @@
     "theme",
     "liquid",
     "liquid-glass",
-    "card-ui"
+    "card-ui",
+    "butterfly"
   ],
   "repository": {
     "type": "git",

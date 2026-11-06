@@ -1,5 +1,7 @@
 # hexo-theme-liquid
 
+**简体中文** | [English](README_EN.md)
+
 一个独立的 Hexo 个人主题：玻璃卡片、系列页、音乐播放器和访问统计都收在主题内部，不依赖站点私有脚本或样式。
 
 ![Hexo Liquid 首页](docs/screenshot.jpg)
@@ -225,7 +227,7 @@ hexo server
 
 ## 许可证
 
-本主题以 Apache-2.0 发布。部分模板结构、样式和 `source/vendor/extsrc/` 下的可选效果资源源自一个 Apache-2.0 许可的既有 Hexo 项目；原始版权声明保留在 [NOTICE.md](NOTICE.md) 和 [LICENSE](LICENSE) 中。
+本主题以 Apache-2.0 发布。部分模板结构、样式和 `source/vendor/extsrc/` 下的可选效果资源源自 [Hexo Butterfly](https://github.com/jerryc127/hexo-theme-butterfly) 5.3.1；原始版权声明保留在 [NOTICE.md](NOTICE.md) 和 [LICENSE](LICENSE) 中。
 
 ## 已知边界
 
