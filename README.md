@@ -227,7 +227,7 @@ hexo server
 
 ## 许可证
 
-本主题以 Apache-2.0 发布。部分模板结构、样式和 `source/vendor/extsrc/` 下的可选效果资源源自一个 Apache-2.0 许可的既有 Hexo 项目；原始版权声明保留在 [NOTICE.md](NOTICE.md) 和 [LICENSE](LICENSE) 中。
+本主题以 Apache-2.0 发布。完整许可证见 [LICENSE](LICENSE)，版权与第三方声明见 [NOTICE.md](NOTICE.md)。
 
 ## 已知边界
 
