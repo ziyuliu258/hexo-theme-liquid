@@ -227,7 +227,7 @@ There is no build step: Pug and Stylus are handled by the Hexo renderers, and fi
 
 ## License
 
-Released under Apache-2.0. Parts of the templates, styles, and the optional effect assets under `source/vendor/extsrc/` are derived from [Hexo Butterfly](https://github.com/jerryc127/hexo-theme-butterfly) 5.3.1. The original copyright notices are retained in [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
+Released under Apache-2.0. Parts of the templates, styles, and the optional effect assets under `source/vendor/extsrc/` are derived from an Apache-2.0 licensed upstream Hexo project. The original copyright notices are retained in [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
 
 ## Known limitations
 

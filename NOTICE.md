@@ -1,10 +1,7 @@
 # NOTICE
 
-This theme is derived from Hexo Butterfly 5.3.1:
-
-- Upstream: https://github.com/jerryc127/hexo-theme-butterfly
-- Upstream author: Jerry <my@crazywong.com>
-- Upstream license: Apache License 2.0 (see LICENSE)
+This theme contains portions derived from an Apache-2.0 licensed upstream
+Hexo theme. The original copyright notice is retained below.
 
 Copyright (c) Jerry <my@crazywong.com>
 
