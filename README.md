@@ -177,6 +177,37 @@ busuanzi:
 
 主题内所有资源引用都经过 `url_for`；文章附件和公共图片的改写由站点自己的 `hexo-asset-image` 配置负责，不需要改 Markdown 原文。`getBgPath()` 也兼容“已带 root”和“未带 root”两种站内路径。
 
+### 目录
+
+侧栏目录的层级编号可以关掉，也可以按文章单独设置：
+
+```yaml
+toc:
+  post: true                        # 文章页显示目录
+  page: false                       # 独立页面显示目录
+  number: true                      # 是否显示 1. / 1.1. 这样的层级编号
+  expand: false                     # 是否默认展开全部层级
+  scroll_percent: false             # 目录顶部是否显示阅读进度
+```
+
+单篇文章在 front-matter 里覆盖全局设置：
+
+```yaml
+---
+toc: false          # 这篇不显示目录
+toc_number: false   # 这篇不显示层级编号
+toc_expand: true    # 这篇默认展开
+---
+```
+
+目录里的标题跳转依赖标题的 `id`。`hexo-renderer-markdown-it` 默认只给 h2 及更深的标题生成 `id`，所以用 `# 一级标题` 写章节的站点需要在 `_config.yml` 放开：
+
+```yaml
+markdown:
+  anchors:
+    level: 1
+```
+
 ### 自定义外观
 
 `source/css/liquid.css` 是 Liquid 的外观层，核心样式不动。玻璃参数在文件开头：

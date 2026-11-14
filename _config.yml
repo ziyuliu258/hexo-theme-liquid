@@ -187,10 +187,10 @@ index_post_content:
 # --------------------------------------
 
 toc:
-  post: true
-  page: false
-  number: true
-  expand: false
+  post: true          # 文章页显示目录
+  page: false         # 独立页面显示目录
+  number: true        # 是否显示 1. / 1.1. 这样的层级编号；单篇可用 front-matter 的 toc_number 覆盖
+  expand: false       # 是否默认展开全部层级；单篇可用 front-matter 的 toc_expand 覆盖
   # Only for post
   style_simple: false
   scroll_percent: true

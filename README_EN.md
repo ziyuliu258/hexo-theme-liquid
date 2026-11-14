@@ -177,6 +177,37 @@ The theme does not change Hexo's image handling. These forms keep working:
 
 Every theme asset goes through `url_for`. Post attachments and shared images are rewritten by the site's own `hexo-asset-image` setup; Markdown does not need to change. `getBgPath()` also accepts both root-prefixed and unprefixed internal paths.
 
+### Table of contents
+
+Level numbering can be turned off globally or per post:
+
+```yaml
+toc:
+  post: true                        # show the TOC on post pages
+  page: false                       # show the TOC on standalone pages
+  number: true                      # show 1. / 1.1. level numbers
+  expand: false                     # expand every level by default
+  scroll_percent: false             # show reading progress on top of the TOC
+```
+
+A post can override the global settings in its front-matter:
+
+```yaml
+---
+toc: false          # hide the TOC on this post
+toc_number: false   # hide level numbers on this post
+toc_expand: true    # expand every level on this post
+---
+```
+
+TOC links jump to headings by `id`. `hexo-renderer-markdown-it` only adds `id` to h2 and deeper by default, so sites that use `# Heading` for sections need this in `_config.yml`:
+
+```yaml
+markdown:
+  anchors:
+    level: 1
+```
+
 ### Appearance
 
 `source/css/liquid.css` is the Liquid appearance layer; the core theme styles stay untouched. The glass parameters are at the top of the file:
