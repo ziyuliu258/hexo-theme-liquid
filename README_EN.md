@@ -208,6 +208,18 @@ markdown:
     level: 1
 ```
 
+### Image viewer
+
+`lightbox: viewer` enables the built-in viewer. It ships with the theme, needs no CDN and no third-party library:
+
+```yaml
+lightbox: viewer
+```
+
+Clicking an image inside a post opens a full-screen view with wheel / button / double-click zoom, drag to pan when zoomed, pinch to zoom on touch screens, `←` `→` to switch images, a download button, and close via `Esc`, the backdrop or the close button. Images wrapped in a link (`[![alt](img)](url)`) are left alone, and adding a `no-viewer` class to an image opts it out.
+
+Other values: `fancybox` / `medium_zoom`, which require providing the matching `fancybox`, `fancybox_css`, `medium_zoom` assets. Leave it empty to disable click-to-zoom.
+
 ### Appearance
 
 `source/css/liquid.css` is the Liquid appearance layer; the core theme styles stay untouched. The glass parameters are at the top of the file:

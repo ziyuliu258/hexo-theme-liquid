@@ -1061,6 +1061,8 @@ CDN:
     meting_js: vendor/extsrc/Meting.min.js
     sharejs: vendor/extsrc/social-share.min.js
     sharejs_css: vendor/extsrc/share.min.css
+    viewer: js/image-viewer.js
+    viewer_css: css/image-viewer.css
     # abcjs_basic_js:
     # algolia_js:
     # algolia_search:

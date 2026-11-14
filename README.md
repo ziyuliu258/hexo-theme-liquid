@@ -208,6 +208,18 @@ markdown:
     level: 1
 ```
 
+### 图片查看器
+
+`lightbox: viewer` 启用主题内置的图片查看器，不依赖 CDN，也不加载第三方库：
+
+```yaml
+lightbox: viewer
+```
+
+点击正文图片打开全屏界面，支持滚轮 / 按钮 / 双击缩放，放大后拖动平移，触屏双指捏合，`←` `→` 切换上下张，下载原图，`Esc`、点背景或右上角关闭。目录里的图片只在文章容器内接管；包在链接里的图片（`[![alt](img)](url)`）不拦截，仍按原链接跳转，给图片加 `no-viewer` 类也可以跳过。
+
+其它可选值：`fancybox` / `medium_zoom`，需要自行提供 `fancybox`、`fancybox_css`、`medium_zoom` 对应的资源；留空则关闭点击放大。
+
 ### 自定义外观
 
 `source/css/liquid.css` 是 Liquid 的外观层，核心样式不动。玻璃参数在文件开头：

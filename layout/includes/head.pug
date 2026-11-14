@@ -58,6 +58,9 @@ if (theme.snackbar && theme.snackbar.enable)
 if theme.lightbox === 'fancybox'
   link(rel='stylesheet' href=url_for(theme.asset.fancybox_css) media="print" onload="this.media='all'")
 
+if theme.lightbox === 'viewer'
+  link(rel='stylesheet' href=url_for(theme.asset.viewer_css) + "?v=" + liquid_asset_version("css/image-viewer.css"))
+
 !=fragment_cache('injectHeadJs', function(){return inject_head_js()})
 
 //- google_adsense

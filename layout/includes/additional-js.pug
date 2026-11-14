@@ -14,8 +14,11 @@ div
   if theme.translate.enable
     script(src=url_for(theme.asset.translate))
 
-  if theme.lightbox
+  if theme.lightbox && theme.lightbox !== 'viewer'
     script(src=url_for(theme.asset[theme.lightbox]))
+
+  if theme.lightbox === 'viewer'
+    script(defer src=url_for(theme.asset.viewer) + "?v=" + liquid_asset_version("js/image-viewer.js"))
 
   if theme.instantpage
     script(src=url_for(theme.asset.instantpage), type='module')
