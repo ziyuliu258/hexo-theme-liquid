@@ -1,6 +1,10 @@
 - let tocNumber = typeof page.toc_number === 'boolean' ? page.toc_number : theme.toc.number
 - let tocExpand = typeof page.toc_expand === 'boolean' ? page.toc_expand : theme.toc.expand
 - let tocExpandClass = tocExpand ? 'is-expand' : ''
+//- toc() 只保留标题的纯文本，KaTeX 输出的 MathML 分支（含隐藏的 TeX 源码 annotation）
+//- 会被一并当成正文，导致目录里出现“βt\beta_tβt”这样的重复源码。这里先在传入前去掉这段隐藏分支，
+//- 并清掉 KaTeX 用来占位的零宽空格，让目录标题保持干净。
+- let tocSource = page.content ? page.content.replace(/<span class="katex-mathml">[\s\S]*?<\/span>/g, '').replace(/\u200b/g, '') : page.content
 
 #card-toc.card-widget
   .item-headline
@@ -11,4 +15,4 @@
   if (page.encrypt == true)
     .toc-content.toc-div-class(class=tocExpandClass style="display:none")!=toc(page.origin, {list_number: tocNumber})
   else
-    .toc-content(class=tocExpandClass)!=toc(page.content, {list_number: tocNumber})
+    .toc-content(class=tocExpandClass)!=toc(tocSource, {list_number: tocNumber})

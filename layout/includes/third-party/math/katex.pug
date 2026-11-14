@@ -1,7 +1,7 @@
 script.
   (async () => {
     const showKatex = () => {
-      document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+      document.querySelectorAll('#article-container .katex, #card-toc .katex').forEach(el => el.classList.add('katex-show'))
     }
 
     if (!window.katex_js_css) {
