@@ -102,6 +102,8 @@ rightside:
   setting: 설정
   aside: 단일/이중 열 전환
   chat: 채팅
+  background: 단색과 이미지 배경 전환
+  back_page: 이전 페이지로
 
 copy_copyright:
   author: 작성자

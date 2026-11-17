@@ -102,6 +102,8 @@ rightside:
   setting: 設定
   aside: シングルカラムとダブルカラムの切り替え
   chat: チャット
+  background: 単色と画像の背景を切り替え
+  back_page: 前のページに戻る
 
 copy_copyright:
   author: 著者

@@ -102,6 +102,8 @@ rightside:
   setting: Settings
   aside: Toggle Between Single-column and Double-column
   chat: Chat
+  background: Toggle Between Solid and Image Background
+  back_page: Back to Previous Page
 
 copy_copyright:
   author: Author

@@ -664,6 +664,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('.social-icon[data-copy]')
+    if (!button) return
+    const text = button.dataset.copy
+    const showCopyState = message => {
+      button.dataset.copied = message
+      clearTimeout(button.copyTimer)
+      button.copyTimer = setTimeout(() => { delete button.dataset.copied }, 1600)
+    }
+    try {
+      await navigator.clipboard.writeText(text)
+      showCopyState('已复制')
+    } catch (error) {
+      showCopyState('复制失败')
+    }
+  })
+
   document.getElementById('rightside').addEventListener('click', e => {
     const $target = e.target.closest('[id]')
     if ($target && rightSideFn[$target.id]) {

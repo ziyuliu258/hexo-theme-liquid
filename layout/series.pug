@@ -17,19 +17,14 @@ block content
         p
           a(href=url_for(seriesCfg.path))= seriesCfg.moreText || _p('liquid.series.all')
   else
-    #recent-posts.recent-posts.series-directory.nc
-      if top_img === false && page.title
-        h1.page-title= page.title
-      else if top_img === false
-        h1.page-title= seriesCfg.title || _p('liquid.series.title')
-      .recent-post-items
+    //- 与分类页保持一致：标题走页头，正文是一张玻璃卡片里的列表。
+    #page
+      .category-lists.series-lists
         if page.series_catalog.length
-          each item in page.series_catalog
-            a.recent-post-item.series-directory-item(href=url_for(item.path) title=item.name)
-              .recent-post-info.no-cover
-                span.article-title.series-directory-name= item.name
-                .article-meta-wrap.series-directory-count= `${item.posts.length} ${_p('liquid.series.post_count_unit')}`
+          ul.category-list.series-list
+            each item in page.series_catalog
+              li.category-list-item
+                a.category-list-link(href=url_for(item.path))= item.name
+                span.category-list-count= item.posts.length
         else
-          .recent-post-item
-            .recent-post-info.no-cover
-              p= _p('liquid.series.empty')
+          p= _p('liquid.series.empty')

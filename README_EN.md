@@ -1,5 +1,13 @@
 # hexo-theme-liquid
 
+## Reading and appearance update
+
+The theme now includes a persistent solid/image background switch, neutral light/dark styling, sticky current-section text with clipped article content to prevent overlap, section deep links, Markdown selection copying (including KaTeX and GFM), and a collapsed-by-default music player. Existing player preferences are preserved.
+
+Enable the background button with `liquid.background.toggle: true` and configure a theme `background` image. `liquid.background.light` and `dark` default to `#f6f6f6` and `#1e1e1e`; first-time visitors start in solid mode. Markdown copying requires `copy.enable: true` and uses bundled browser libraries. Reading helpers load on article pages with Liquid enabled; PJAX reinitialization is not yet implemented.
+
+See [reading and appearance configuration (Chinese)](docs/reading-and-appearance.md) for examples and upgrade notes.
+
 English | **[简体中文](README.md)**
 
 A standalone Hexo personal theme: liquid-glass cards, series pages, a music player, and visitor statistics live inside the theme. No site-private scripts or styles are required.

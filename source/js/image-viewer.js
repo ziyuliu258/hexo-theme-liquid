@@ -138,7 +138,8 @@
     document.body.style.overflow = 'hidden'
     if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`
     document.addEventListener('keydown', onKeydown)
-    overlay.querySelector('.iv-close').focus({ preventScroll: true })
+    const closeBtn = overlay.querySelector('[data-act="close"]')
+    if (closeBtn) closeBtn.focus({ preventScroll: true })
   }
 
   const close = () => {

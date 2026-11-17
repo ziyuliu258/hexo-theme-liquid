@@ -6,7 +6,9 @@ nav#nav
       if theme.nav.display_title
         span.site-name=config.title
     if globalPageType === 'post'
-      a.nav-page-title(href=url_for('/'))
+      button#nav-back.nav-back(type="button" title=_p('rightside.back_page') aria-label=_p('rightside.back_page'))
+        i.fas.fa-chevron-left
+      a.nav-page-title(href='#')
         span.site-name=(page.title || config.title)
   #menus
     if theme.search.use

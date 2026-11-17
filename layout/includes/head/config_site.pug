@@ -17,6 +17,8 @@
 
   const liquid = theme.liquid || {}
   const liquidGlass = liquid.glass || {}
+  const solidBackground = liquid.background || {}
+  const solidBackgroundImage = theme.background && !/^(?:#|rgb|hsl|var\()/i.test(String(theme.background))
   const liquidStats = liquid_stats()
   const liquidMusic = liquid_music()
   const liquidComments = liquid_comments()
@@ -25,6 +27,13 @@
     glass: {
       enable: liquidGlass.enable !== false,
       refraction: liquidGlass.refraction !== false
+    },
+    background: {
+      toggle: solidBackground.toggle === true && !!theme.background,
+      image: solidBackgroundImage ? url_for(theme.background) : '',
+      avif: solidBackgroundImage && solidBackground.avif ? url_for(solidBackground.avif) : '',
+      light: solidBackground.light || '#f6f6f6',
+      dark: solidBackground.dark || '#1e1e1e'
     },
     stats: {
       enable: liquidStats.enable,
@@ -81,3 +90,18 @@ script#config-diff.
     pageType: '!{page.type == 'shuoshuo' ? 'shuoshuo' : globalPageType}',
     liquid: !{JSON.stringify(liquidRuntime)}
   }
+
+//- 默认使用纯色背景，并在首屏渲染前套上，避免先闪出图片背景。
+if solidBackground.toggle && theme.background
+  script.
+    (function () {
+      try {
+        var saved = window.btf && btf.saveToLocal ? btf.saveToLocal.get('blog-bg-mode') : undefined
+        if (saved === 'image') return
+        var bg = (window.GLOBAL_CONFIG_SITE.liquid || {}).background || {}
+        var night = document.documentElement.getAttribute('data-theme') === 'dark'
+        document.documentElement.style.setProperty('--solid-bg', night ? bg.dark : bg.light)
+        document.documentElement.style.setProperty('--solid-fg', night ? 'rgba(255, 255, 255, 0.82)' : '#2c3138')
+        document.documentElement.classList.add('solid-bg')
+      } catch (error) {}
+    })()

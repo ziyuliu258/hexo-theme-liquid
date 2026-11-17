@@ -103,6 +103,8 @@ rightside:
   setting: 设置
   aside: 单栏和双栏切换
   chat: 聊天
+  background: 切换纯色或图片背景
+  back_page: 返回上一页
 
 copy_copyright:
   author: 作者

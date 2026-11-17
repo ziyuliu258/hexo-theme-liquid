@@ -19,6 +19,363 @@
   display: none !important;
 }
 
+/* 分享按钮使用页面已加载的 Font Awesome。
+   旧 share.min.css 用 `.social-share *` 强制了不存在的 socialshare 字体，
+   这里用更高优先级的选择器（含 ::before）把它覆盖掉。 */
+.social-share .social-share-icon,
+.social-share .social-share-icon::before,
+.social-share .social-share-icon::after,
+.post-share .social-share .social-share-icon,
+.post-share .social-share .social-share-icon::before {
+  /* CDN 未锁版本：家族名随版本变化，按新旧顺序回退。 */
+  font-family: "Font Awesome 7 Brands", "Font Awesome 6 Brands", "Font Awesome 5 Brands" !important;
+  font-weight: 400 !important;
+}
+
+.social-share .social-share-icon {
+  display: inline-block !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 16px !important;
+  line-height: 32px !important;
+  color: var(--font-color) !important;
+  background: none !important;
+  border: 1px solid var(--font-color) !important;
+  opacity: 0.78;
+  vertical-align: middle;
+}
+
+.social-share .icon-weibo::before { content: "\f18a" !important; }
+.social-share .icon-wechat::before { content: "\f1d7" !important; }
+.social-share .icon-qq::before { content: "\f1d6" !important; }
+.social-share .icon-facebook::before { content: "\f39e" !important; }
+.social-share .icon-twitter::before { content: "\e61b" !important; }
+
+.social-share .social-share-icon:hover {
+  background: transparent !important;
+  color: var(--font-color) !important;
+  opacity: 1;
+}
+
+/* 站点强调色统一改为中性灰：按钮、滚动条、加载底色、页眉页脚兜底色。 */
+:root {
+  --btn-bg: #e8e8e8;
+  --btn-color: #333;
+  --btn-hover-color: #d6d6d6;
+  --scrollbar-color: #c9c9c9;
+  --preloader-bg: #f2f2f2;
+  --preloader-color: #6b6b6b;
+}
+
+/* 黑夜需要深底浅图标，覆盖上面的浅色值。 */
+[data-theme='dark'] {
+  --btn-bg: #3a3a3a;
+  --btn-color: rgba(255, 255, 255, 0.9);
+  --btn-hover-color: #4d4d4d;
+  --scrollbar-color: #6a6a6a;
+  --preloader-bg: #1e1e1e;
+  --preloader-color: rgba(255, 255, 255, 0.75);
+}
+
+/* 侧栏作者卡：黑夜按钮和图标一律纯白，避免灰底灰字。 */
+[data-theme='dark'] #aside-content .card-info #card-info-btn,
+[data-theme='dark'] #aside-content .card-info #card-info-btn i,
+[data-theme='dark'] #aside-content .card-info #card-info-btn span {
+  color: #fff !important;
+}
+
+[data-theme='dark'] #aside-content .card-info .card-info-social-icons .social-icon,
+[data-theme='dark'] #aside-content .card-info .card-info-social-icons .social-icon i {
+  color: #fff !important;
+}
+
+/* 文章标题：悬停时在左侧淡入 H2/H3 这样的层级标签。 */
+#article-container h1,
+#article-container h2,
+#article-container h3,
+#article-container h4,
+#article-container h5,
+#article-container h6 {
+  position: relative;
+  scroll-margin-top: 76px;
+}
+
+#article-container h1::before,
+#article-container h2::before,
+#article-container h3::before,
+#article-container h4::before,
+#article-container h5::before,
+#article-container h6::before {
+  content: attr(data-heading-level);
+  position: absolute;
+  top: 0.5em;
+  right: calc(100% + 4px);
+  color: var(--font-color);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+#article-container h1:hover::before,
+#article-container h2:hover::before,
+#article-container h3:hover::before,
+#article-container h4:hover::before,
+#article-container h5:hover::before,
+#article-container h6:hover::before {
+  opacity: 0.45;
+  transform: translateX(0);
+}
+
+@media screen and (max-width: 1300px) {
+  #article-container h1::before,
+  #article-container h2::before,
+  #article-container h3::before,
+  #article-container h4::before,
+  #article-container h5::before,
+  #article-container h6::before {
+    content: none;
+  }
+}
+
+/* 吸顶导航里的返回箭头：只在收起后出现。 */
+#nav .nav-back {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: 0.82em;
+  line-height: 1;
+  vertical-align: middle;
+  opacity: 0.62;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+#page-header.nav-fixed #nav .nav-back {
+  display: inline-flex;
+}
+
+#nav .nav-back:hover {
+  opacity: 1;
+}
+
+/* 正文标题随滚动缩小淡出，和导航栏里的小标题交接。 */
+#post-info .post-title {
+  will-change: transform, opacity;
+}
+
+/* 单一背景：置顶层只画文字，正文在其下方裁切。 */
+#post .reading-heading-rail {
+  position: sticky;
+  top: 60px;
+  z-index: 3;
+  height: 0;
+  pointer-events: none;
+}
+
+#post .reading-heading-button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 4px 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--font-color);
+  text-align: left;
+  overflow-wrap: anywhere;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+#post .reading-heading-button[hidden] {
+  display: none;
+}
+
+/* 纯色模式下的吸顶导航也改成实色，省掉一层模糊。 */
+html.solid-bg #page-header.nav-fixed > #nav,
+html.solid-bg #page-header.not-top-img > #nav {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.solid-bg:not([data-theme='dark']) #page-header.nav-fixed > #nav,
+html.solid-bg:not([data-theme='dark']) #page-header.not-top-img > #nav {
+  background: #fff;
+}
+
+html.solid-bg[data-theme='dark'] #page-header.nav-fixed > #nav,
+html.solid-bg[data-theme='dark'] #page-header.not-top-img > #nav {
+  background: #1e1e1e;
+}
+
+/* 纯色模式下其余玻璃块同样改成实色。 */
+html.solid-bg #article-container .shuoshuo-item,
+html.solid-bg .type-404 .error-content,
+html.solid-bg .layout .pagination > *:not(.space) {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.solid-bg:not([data-theme='dark']) #article-container .shuoshuo-item,
+html.solid-bg:not([data-theme='dark']) .type-404 .error-content,
+html.solid-bg:not([data-theme='dark']) .layout .pagination > *:not(.space) {
+  background: #fff;
+}
+
+html.solid-bg[data-theme='dark'] #article-container .shuoshuo-item,
+html.solid-bg[data-theme='dark'] .type-404 .error-content,
+html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
+  background: #2a2a2a;
+}
+
+/* 只有阅读文章时的正文用宋体，其余页面一律黑体。 */
+#post #article-container {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+}
+
+/* 正文里的代码仍然用等宽字体。 */
+#post #article-container pre,
+#post #article-container code,
+#post #article-container kbd {
+  font-family: "JetBrains Mono", "Consolas", monospace;
+}
+
+/* 分类/系列列表的圆点也改成中性灰。 */
+.category-lists ul li::before {
+  border-color: rgba(128, 128, 128, 0.55) !important;
+}
+
+.category-lists ul li:hover::before {
+  border-color: var(--font-color) !important;
+}
+
+[data-theme='dark'] .category-lists ul li::before {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* 行内代码改成中性灰，不再用红色。代码块仍保留高亮配色。 */
+#article-container :not(pre) > code,
+.container :not(pre) > code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #3d3d3d;
+  background: rgba(128, 128, 128, 0.16);
+}
+
+[data-theme='dark'] #article-container :not(pre) > code,
+[data-theme='dark'] .container :not(pre) > code {
+  color: #e8e8e8;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* 引用块改成 GitHub 式的纯竖线，去掉圆角和彩色底。 */
+#article-container blockquote,
+.post-content blockquote {
+  border-left: 4px solid rgba(0, 0, 0, 0.18) !important;
+  border-radius: 0 !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  color: var(--font-color) !important;
+}
+
+[data-theme='dark'] #article-container blockquote,
+[data-theme='dark'] .post-content blockquote {
+  border-left-color: rgba(255, 255, 255, 0.26) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+/* 图片没加载出来时，页眉和页脚原本会闪主题蓝，改成中性底色。 */
+#page-header,
+#footer {
+  background-color: #f0f0f0;
+}
+
+[data-theme='dark'] #page-header,
+[data-theme='dark'] #footer {
+  background-color: #1e1e1e;
+}
+
+/* 正文链接改成素灰，悬停略深。 */
+#article-container a,
+#post .post-copyright .post-copyright-info a {
+  color: #6f6f6f;
+  text-decoration-color: rgba(111, 111, 111, 0.45);
+}
+
+#article-container a:hover,
+#post .post-copyright .post-copyright-info a:hover {
+  color: #2b2b2b;
+}
+
+[data-theme='dark'] #article-container a,
+[data-theme='dark'] #post .post-copyright .post-copyright-info a {
+  color: #b6b6b6;
+}
+
+[data-theme='dark'] #article-container a:hover,
+[data-theme='dark'] #post .post-copyright .post-copyright-info a:hover {
+  color: #f2f2f2;
+}
+
+/* 版权框、标签和框内链接改成跟随正文颜色，不再用浅蓝色。 */
+#post .post-copyright,
+#post .post-copyright .post-copyright-meta,
+#post .post-copyright .post-copyright-info,
+#post .post-copyright .post-copyright-info a,
+#post .post-meta__tags {
+  color: var(--font-color);
+}
+
+#post .post-copyright {
+  border-color: color-mix(in srgb, var(--font-color) 28%, transparent);
+}
+
+#post .post-meta__tags {
+  border-color: color-mix(in srgb, var(--font-color) 45%, transparent);
+}
+
+#post .post-meta__tags:hover {
+  background: color-mix(in srgb, var(--font-color) 12%, transparent);
+  color: var(--font-color);
+}
+
+/* 文章末尾的标签胶囊改成素灰，不再用主题蓝。 */
+#post .post-meta__tags,
+#post .post-meta__tag-list a {
+  color: #6f6f6f !important;
+  border-color: rgba(111, 111, 111, 0.45) !important;
+}
+
+#post .post-meta__tags:hover,
+#post .post-meta__tag-list a:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #2b2b2b !important;
+}
+
+[data-theme='dark'] #post .post-meta__tags,
+[data-theme='dark'] #post .post-meta__tag-list a {
+  color: #b6b6b6 !important;
+  border-color: rgba(182, 182, 182, 0.45) !important;
+}
+
+[data-theme='dark'] #post .post-meta__tags:hover,
+[data-theme='dark'] #post .post-meta__tag-list a:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #f2f2f2 !important;
+}
+
 /* Slightly lighter dark surfaces, matching the previous site appearance. */
 [data-theme='dark'] {
   --global-bg: #2e2e2e;
@@ -31,6 +388,134 @@
 [data-theme='dark'] #page-header.nav-fixed > #nav,
 [data-theme='dark'] #page-header.not-top-img > #nav {
   background: rgba(28, 28, 28, 0.8);
+}
+
+/* 纯色背景由右下角按钮切换。页眉、页面和页脚共用一个颜色，滤镜遮罩一并去掉。 */
+html.solid-bg #web_bg,
+html.solid-bg #page-header,
+html.solid-bg #footer {
+  background-color: var(--solid-bg, #f6f6f6) !important;
+  background-image: none !important;
+}
+
+html.solid-bg #web_bg::before,
+html.solid-bg[data-theme='dark'] #web_bg::before,
+html.solid-bg[data-theme='dark'] #web_bg:before,
+html.solid-bg #page-header:before,
+html.solid-bg #footer:before {
+  content: none;
+}
+
+/* 首页不再铺满一屏。标题留在导航下面，当成普通标题。 */
+/* 注意：这里不能给 #page-header 加左右 padding，
+   否则绝对定位的 #nav 会从内容盒开始，左侧露出一块空隙。 */
+html.solid-bg #page-header.full_page {
+  height: auto;
+  min-height: 0;
+  padding: 108px 0 28px;
+  background-attachment: scroll;
+}
+
+/* 文章页和其他内页也一样收紧页眉，别留一大片空白。 */
+html.solid-bg #page-header.post-bg,
+html.solid-bg #page-header.not-home-page {
+  height: auto;
+  min-height: 0;
+  padding: 96px 0 24px;
+  background-attachment: scroll;
+}
+
+html.solid-bg #page-header.post-bg #post-info,
+html.solid-bg #page-header.not-home-page #page-site-info {
+  position: static;
+  top: auto;
+  bottom: auto;
+  padding: 0;
+  transform: none;
+}
+
+/* 页面标题原来靠页眉的左右内边距缩进，现在补回到标题本身。 */
+html.solid-bg #page-header.not-home-page #page-site-info {
+  padding: 0 20px;
+}
+
+html.solid-bg #page-header.full_page #site-info {
+  position: static;
+  top: auto;
+  padding: 0 20px;
+}
+
+html.solid-bg #page-header #scroll-down {
+  display: none;
+}
+
+html.solid-bg:not([data-theme='dark']) #page-header #site-title,
+html.solid-bg:not([data-theme='dark']) #page-header #site-subtitle,
+html.solid-bg:not([data-theme='dark']) #page-header #page-site-info,
+html.solid-bg:not([data-theme='dark']) #page-header #post-info,
+html.solid-bg:not([data-theme='dark']) #page-header #post-info .post-title,
+html.solid-bg:not([data-theme='dark']) #page-header #post-meta,
+html.solid-bg:not([data-theme='dark']) #page-header #post-meta a,
+html.solid-bg:not([data-theme='dark']) #page-header #nav,
+html.solid-bg:not([data-theme='dark']) #page-header #nav a,
+html.solid-bg:not([data-theme='dark']) #page-header #nav span.site-page,
+html.solid-bg:not([data-theme='dark']) #page-header #blog-info,
+html.solid-bg:not([data-theme='dark']) #page-header #toggle-menu,
+html.solid-bg:not([data-theme='dark']) #footer,
+html.solid-bg:not([data-theme='dark']) #footer a {
+  color: var(--solid-fg, #2c3138);
+  text-shadow: none;
+}
+
+html.solid-bg:not([data-theme='dark']) #page-header #nav a:hover,
+html.solid-bg:not([data-theme='dark']) #page-header #nav span.site-page:hover,
+html.solid-bg:not([data-theme='dark']) #page-header #toggle-menu:hover {
+  color: var(--solid-fg, #2c3138);
+}
+
+/* 纯色没有背景可透。白天用白卡片，黑夜用比背景略浅的实色。 */
+html.solid-bg #recent-posts .recent-post-item,
+html.solid-bg #recent-posts .home-announcement,
+html.solid-bg #aside-content .card-widget,
+html.solid-bg #post,
+html.solid-bg #archive,
+html.solid-bg #tag,
+html.solid-bg #category,
+html.solid-bg #page,
+html.solid-bg .music-dock,
+html.solid-bg .music-dock-playlist {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.solid-bg:not([data-theme='dark']) #aside-content .card-widget,
+html.solid-bg:not([data-theme='dark']) #post,
+html.solid-bg:not([data-theme='dark']) #archive,
+html.solid-bg:not([data-theme='dark']) #tag,
+html.solid-bg:not([data-theme='dark']) #category,
+html.solid-bg:not([data-theme='dark']) #page,
+html.solid-bg:not([data-theme='dark']) .music-dock,
+html.solid-bg:not([data-theme='dark']) .music-dock-playlist,
+html.solid-bg:not([data-theme='dark']) #recent-posts:not(.series-directory) .recent-post-item,
+html.solid-bg:not([data-theme='dark']) #recent-posts:not(.series-directory) .home-announcement {
+  background: #fff;
+}
+
+html.solid-bg[data-theme='dark'] #recent-posts .recent-post-item,
+html.solid-bg[data-theme='dark'] #recent-posts .home-announcement,
+html.solid-bg[data-theme='dark'] #aside-content .card-widget,
+html.solid-bg[data-theme='dark'] #post,
+html.solid-bg[data-theme='dark'] #archive,
+html.solid-bg[data-theme='dark'] #tag,
+html.solid-bg[data-theme='dark'] #category,
+html.solid-bg[data-theme='dark'] #page,
+html.solid-bg[data-theme='dark'] .music-dock,
+html.solid-bg[data-theme='dark'] .music-dock-playlist {
+  background: #2a2a2a;
+}
+
+#bg-toggle.is-solid i::before {
+  content: '\f576';
 }
 
 /* 让背景融入日夜模式，而不是覆盖页面原本的白色或深色底色。 */
@@ -47,7 +532,7 @@
 
 /* 玻璃效果参数：对齐 liquidglass-kde-widgets (LiquidGlass.qml + liquidglass.frag) 的光学参数 */
 :root {
-  --glass-tint: rgba(255, 255, 255, 0.36);
+  --glass-tint: rgba(255, 255, 255, 0.70);
   --glass-reading-tint: rgba(255, 255, 255, 0.80);
   --glass-solid: rgba(250, 252, 255, 0.96);
   --glass-blur: 14px;
@@ -63,13 +548,13 @@
   --glass-shadow: rgba(20, 32, 54, 0.16);
   --glass-shadow-hover: rgba(20, 32, 54, 0.24);
   /* 下面每一处单独调，改一个不会带动另一个。 */
-  --home-bg: rgba(255, 255, 255, 0.80);
+  --home-bg: rgba(255, 255, 255, 0.70);
   --home-blur: 14px;
   --home-saturate: 165%;
   --series-bg: rgba(255, 255, 255, 0.80);
   --series-blur: 14px;
   --series-saturate: 165%;
-  --post-bg: rgba(255, 255, 255, 0.80);
+  --post-bg: rgba(255, 255, 255, 0.70);
   --post-blur: 14px;
   --post-saturate: 165%;
   --archive-bg: rgba(255, 255, 255, 0.80);
@@ -84,29 +569,29 @@
   --page-bg: rgba(255, 255, 255, 0.80);
   --page-blur: 14px;
   --page-saturate: 165%;
-  --aside-bg: rgba(255, 255, 255, 0.36);
+  --aside-bg: rgba(255, 255, 255, 0.70);
   --aside-blur: 14px;
   --aside-saturate: 165%;
 }
 
 [data-theme='dark'] {
-  --glass-tint: rgba(16, 20, 28, 0.32);
-  --glass-reading-tint: rgba(20, 25, 35, 0.82);
-  --glass-solid: rgba(22, 26, 34, 0.97);
+  --glass-tint: rgba(28, 28, 28, 0.72);
+  --glass-reading-tint: rgba(32, 32, 32, 0.82);
+  --glass-solid: rgba(30, 30, 30, 0.97);
   --glass-blur: 14px;
   --glass-saturate: 165%;
   --glass-spec-strength: 0.75;
   --glass-border: rgba(255, 255, 255, 0.18);
   --glass-shadow: rgba(0, 0, 0, 0.32);
   --glass-shadow-hover: rgba(0, 0, 0, 0.44);
-  --home-bg: rgba(20, 25, 35, 0.82);
-  --series-bg: rgba(20, 25, 35, 0.82);
-  --post-bg: rgba(20, 25, 35, 0.82);
-  --archive-bg: rgba(20, 25, 35, 0.82);
-  --tag-bg: rgba(20, 25, 35, 0.82);
-  --category-bg: rgba(20, 25, 35, 0.82);
-  --page-bg: rgba(20, 25, 35, 0.82);
-  --aside-bg: rgba(16, 20, 28, 0.32);
+  --home-bg: rgba(28, 28, 28, 0.72);
+  --series-bg: rgba(32, 32, 32, 0.82);
+  --post-bg: rgba(28, 28, 28, 0.72);
+  --archive-bg: rgba(32, 32, 32, 0.82);
+  --tag-bg: rgba(32, 32, 32, 0.82);
+  --category-bg: rgba(32, 32, 32, 0.82);
+  --page-bg: rgba(32, 32, 32, 0.82);
+  --aside-bg: rgba(28, 28, 28, 0.72);
 }
 
 #article-container .shuoshuo-item,
@@ -409,12 +894,13 @@ html[data-theme='light'] .layout .pagination > .space::before {
 
 /* 文章目录：文字使用实色，避免与半透明玻璃中的背景混在一起。 */
 #aside-content #card-toc {
-  --toc-link-color: #172b40;
-  --toc-title-color: #13263b;
-  --toc-hover-color: #103b5b;
-  --toc-hover-bg: rgba(73, 177, 245, 0.16);
-  --toc-active-text: #102a43;
-  --toc-guide-color: rgba(23, 43, 64, 0.30);
+  --toc-link-color: #4a4a4a;
+  --toc-title-color: #2b2b2b;
+  --toc-hover-color: #1b1b1b;
+  --toc-hover-bg: rgba(0, 0, 0, 0.06);
+  --toc-active-text: #1b1b1b;
+  --toc-active-bg: rgba(0, 0, 0, 0.1);
+  --toc-guide-color: rgba(0, 0, 0, 0.18);
   color: var(--toc-title-color);
 }
 
@@ -422,12 +908,29 @@ html[data-theme='light'] .layout .pagination > .space::before {
   --toc-link-color: #eef4fb;
   --toc-title-color: #f8fafc;
   --toc-hover-color: #ffffff;
-  --toc-hover-bg: rgba(73, 177, 245, 0.18);
+  --toc-hover-bg: rgba(255, 255, 255, 0.14);
+  --toc-active-bg: rgba(255, 255, 255, 0.2);
+  --toc-active-text: #ffffff;
   --toc-guide-color: rgba(238, 244, 251, 0.35);
 }
 
+/* 只有当前所在章节加粗，其他条目保持常规字重。 */
 #aside-content #card-toc .toc-content .toc-link {
-  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* 编号固定宽度、右对齐，让所有条目的文字左边缘落在同一条竖线上。 */
+#aside-content #card-toc .toc-content .toc-number {
+  display: inline-block;
+  min-width: 1.6em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#aside-content #card-toc .toc-content .toc-text {
+  margin-left: 0.45em;
 }
 
 #aside-content #card-toc .toc-content .toc-link:not(.active):hover,
@@ -441,7 +944,10 @@ html[data-theme='light'] .layout .pagination > .space::before {
   outline-offset: 2px;
 }
 
-#aside-content #card-toc .toc-content .toc-link.active {
+#aside-content #card-toc .toc-content .toc-link.active,
+#aside-content #card-toc .toc-content .toc-link.active:hover,
+#aside-content #card-toc .toc-content .toc-link.active:focus-visible {
+  background: var(--toc-active-bg);
   color: var(--toc-active-text);
   font-weight: 700;
 }
@@ -450,9 +956,16 @@ html[data-theme='light'] .layout .pagination > .space::before {
   border-left-color: var(--toc-guide-color);
 }
 
-/* 保留 Font Awesome 置顶图标自身的实心字重，避免继承标题字重后变形 */
-#recent-posts .article-title > .sticky {
+/* 置顶图标改成正放的中性灰小图钉，与整站黑白灰一致。
+   选择器必须和主题原来的 `#recent-posts .recent-post-item > .recent-post-info > .article-title .sticky` 同权重。 */
+#recent-posts .recent-post-item > .recent-post-info > .article-title .sticky {
+  margin-right: 7px;
+  color: var(--font-color);
+  font-size: 0.72em;
   font-weight: 900;
+  opacity: 0.55;
+  transform: none;
+  vertical-align: 0.12em;
 }
 
 /* 首页专栏与专栏阅读目录 */
@@ -520,9 +1033,9 @@ html[data-theme='light'] .layout .pagination > .space::before {
 
 .music-player-panel {
   padding: 1.5rem;
-  border: 1px solid rgba(73, 177, 245, 0.25);
+  border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: 16px;
-  background: rgba(73, 177, 245, 0.08);
+  background: rgba(128, 128, 128, 0.1);
 }
 
 .music-now-playing {
@@ -544,8 +1057,8 @@ html[data-theme='light'] .layout .pagination > .space::before {
   width: 64px;
   height: 64px;
   border-radius: 12px;
-  color: #3976a9;
-  background: rgba(73, 177, 245, 0.18);
+  color: #6f6f6f;
+  background: rgba(128, 128, 128, 0.18);
   font-size: 2rem;
 }
 
@@ -602,9 +1115,66 @@ html[data-theme='light'] .layout .pagination > .space::before {
   fill: currentColor;
 }
 
-.music-page-controls input[type="range"] {
+/* 播放器滑块直接画成灰色，不依赖浏览器默认强调色。 */
+.music-page-controls input[type="range"],
+.music-dock input[type="range"] {
   min-width: 0;
-  accent-color: #49b1f5;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(128, 128, 128, 0.38);
+  accent-color: #7a7a7a;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.music-page-controls input[type="range"]::-webkit-slider-thumb,
+.music-dock input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #7a7a7a;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.music-page-controls input[type="range"]::-moz-range-thumb,
+.music-dock input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #7a7a7a;
+}
+
+.music-page-controls input[type="range"]::-moz-range-track,
+.music-dock input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(128, 128, 128, 0.38);
+}
+
+[data-theme='dark'] .music-page-controls input[type="range"],
+[data-theme='dark'] .music-dock input[type="range"] {
+  background: rgba(255, 255, 255, 0.24);
+  accent-color: #cfcfcf;
+}
+
+[data-theme='dark'] .music-page-controls input[type="range"]::-webkit-slider-thumb,
+[data-theme='dark'] .music-dock input[type="range"]::-webkit-slider-thumb {
+  background: #cfcfcf;
+}
+
+[data-theme='dark'] .music-page-controls input[type="range"]::-moz-range-thumb,
+[data-theme='dark'] .music-dock input[type="range"]::-moz-range-thumb {
+  background: #cfcfcf;
+}
+
+[data-theme='dark'] .music-page-controls input[type="range"]::-moz-range-track,
+[data-theme='dark'] .music-dock input[type="range"]::-moz-range-track {
+  background: rgba(255, 255, 255, 0.24);
 }
 
 .music-page-controls [data-music-seek] {
@@ -655,7 +1225,7 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 #article-container .music-lyric-line.is-active {
-  color: #2584c2;
+  color: var(--text-highlight-color);
   font-size: 1.22rem;
   font-weight: 700;
   opacity: 1;
@@ -678,9 +1248,9 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 [data-theme="dark"] .music-dock {
-  color: #e7eef5;
+  color: #ececec;
   border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(30, 37, 46, 0.9);
+  background: rgba(36, 36, 36, 0.9);
 }
 
 .music-dock-body {
@@ -762,7 +1332,7 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 .music-dock-play {
-  color: #2584c2 !important;
+  color: var(--text-highlight-color) !important;
 }
 
 .music-dock-volume {
@@ -788,7 +1358,6 @@ html[data-theme='light'] .layout .pagination > .space::before {
 
 .music-dock input[type="range"] {
   min-width: 0;
-  accent-color: #49b1f5;
 }
 
 .music-dock-progress input {
@@ -813,7 +1382,7 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 .music-dock.is-playlist-open .music-dock-list {
-  color: #2584c2;
+  color: var(--text-highlight-color);
 }
 
 .music-dock-playlist {
@@ -833,9 +1402,9 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 [data-theme="dark"] .music-dock-playlist {
-  color: #e7eef5;
+  color: #ececec;
   border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(30, 37, 46, 0.96);
+  background: rgba(36, 36, 36, 0.96);
 }
 
 .music-dock-playlist ol {
@@ -855,7 +1424,8 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 .music-dock-playlist button span {
-  color: #3987bc;
+  color: inherit;
+  opacity: 0.6;
   font-variant-numeric: tabular-nums;
 }
 
@@ -877,8 +1447,8 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 .music-dock-playlist button.is-current {
-  color: #2584c2;
-  background: rgba(73, 177, 245, 0.16);
+  color: var(--text-highlight-color);
+  background: rgba(128, 128, 128, 0.18);
 }
 
 .music-dock-playlist button:disabled {
@@ -895,12 +1465,19 @@ html[data-theme='light'] .layout .pagination > .space::before {
   margin-top: 6px;
 }
 
+/* 折叠后的圆形按钮：图标跟随主题黑白，不再用蓝色。 */
 .music-dock-launcher {
   display: none;
   width: 48px;
   height: 48px;
-  font-size: 1.5rem;
-  color: #2584c2 !important;
+  color: inherit !important;
+}
+
+.music-dock-launcher svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
 .music-dock.is-collapsed {
@@ -909,7 +1486,9 @@ html[data-theme='light'] .layout .pagination > .space::before {
 }
 
 .music-dock.is-collapsed .music-dock-launcher {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .music-dock.is-collapsed .music-dock-body {
@@ -1001,11 +1580,12 @@ html[data-theme='light'] .layout .pagination > .space::before {
 
 .music-tracks li.is-current {
   border-radius: 8px;
-  background: rgba(73, 177, 245, 0.12);
+  background: rgba(128, 128, 128, 0.16);
 }
 
 .music-track-number {
-  color: #3987bc;
+  color: inherit;
+  opacity: 0.6;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1096,7 +1676,7 @@ html[data-theme='light'] .layout .pagination > .space::before {
   border: 0;
   border-radius: 0.35rem;
   color: #fff;
-  background: #2584c2;
+  background: #4a4a4a;
   cursor: pointer;
 }
 

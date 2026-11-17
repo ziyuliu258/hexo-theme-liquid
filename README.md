@@ -16,6 +16,9 @@
 
 - **配置集中**：`nav`、`menu`、`aside`、`comments`、`CDN` 等常用配置保留，新增功能集中在 `liquid:` 段。
 - **玻璃卡片**：CSS `backdrop-filter` + Chromium SVG 折射，近似液态玻璃外观；参数全部是 CSS 变量。
+- **背景切换与中性色彩**：可记忆的纯色 / 图片背景切换，浅色和深色模式分别适配；纯色卡片使用不透明背景。
+- **阅读辅助**：当前章节置顶、点击返回章节、目录深链接和标题层级提示；置顶文字与正文共用背景，通过裁切正文避免叠字。
+- **复制为 Markdown**：正文选区复制时保留标题、引用、代码块、GFM 表格和 KaTeX 公式。
 - **系列 / 专栏页**：根据文章 front-matter 的 `series` 自动生成专栏目录和文章列表。
 - **音乐页与全局播放器**：播放器、歌词、歌单渲染都在主题内，歌单地址可配置。
 - **访问统计**：兼容不蒜子接口，可替换 API 地址。
@@ -111,6 +114,9 @@ liquid:
   background:
     avif: /images/background.avif   # 可选：同一背景的 AVIF 版本
     preload: true
+    toggle: true                    # 需要同时设置主题 background；首次访问默认纯色
+    light: '#f6f6f6'
+    dark: '#1e1e1e'
 
   assets:
     css: []                # 站点自己的 CSS，例如 [css/site.css]
@@ -118,6 +124,8 @@ liquid:
 ```
 
 ### 导航菜单
+
+本轮更新的背景切换、阅读辅助、复制行为及升级说明见 [阅读与外观配置](docs/reading-and-appearance.md)。
 
 主题默认 `menu: null`，不会带入示例菜单。站点在 `_config.liquid.yml` 中写完整菜单即可，顺序就是显示顺序：
 

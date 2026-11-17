@@ -16,7 +16,10 @@ function normalizeAssetPath (value, fallback) {
 }
 
 function liquidConfig (theme) {
-  return (theme && theme.liquid) || {}
+  if (!theme) return {}
+  // 模板里传进来的是主题配置对象，生成器里传进来的是 Theme 实例。
+  const config = theme.config || theme
+  return config.liquid || {}
 }
 
 function seriesConfig (theme) {

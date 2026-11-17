@@ -102,6 +102,8 @@ rightside:
   setting: 設定
   aside: 單欄和雙欄切換
   chat: 聊天
+  background: 切換純色或圖片背景
+  back_page: 返回上一頁
 
 copy_copyright:
   author: 作者

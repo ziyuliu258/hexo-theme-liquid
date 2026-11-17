@@ -1,6 +1,7 @@
 - const liquidJsConfig = theme.liquid || {}
 - const liquidJsGlass = liquidJsConfig.glass || {}
 - const liquidJsMotion = liquidJsConfig.aside_motion || {}
+- const liquidJsBackground = liquidJsConfig.background || {}
 - const liquidJsStats = liquid_stats()
 - const liquidJsMusic = liquid_music()
 div
@@ -10,6 +11,15 @@ div
     script(defer src=url_for("js/liquid-glass.js") + "?v=" + liquid_asset_version("js/liquid-glass.js"))
   if liquidJsConfig.enable !== false && liquidJsMotion.enable !== false
     script(defer src=url_for("js/aside-motion.js") + "?v=" + liquid_asset_version("js/aside-motion.js"))
+  if liquidJsConfig.enable !== false && liquidJsBackground.toggle && theme.background
+    script(defer src=url_for("js/background-toggle.js") + "?v=" + liquid_asset_version("js/background-toggle.js"))
+  if liquidJsConfig.enable !== false && globalPageType === 'post'
+    script(defer src=url_for("js/reading-guide.js") + "?v=" + liquid_asset_version("js/reading-guide.js"))
+  if liquidJsConfig.enable !== false && theme.copy && theme.copy.enable
+    //- 复制正文时导出 Markdown：先把 HTML 转换库放在 main.js 之前。
+    script(src=url_for("vendor/extsrc/turndown.js"))
+    script(src=url_for("vendor/extsrc/turndown-plugin-gfm.js"))
+    script(defer src=url_for("js/copy-markdown.js") + "?v=" + liquid_asset_version("js/copy-markdown.js"))
 
   if theme.translate.enable
     script(src=url_for(theme.asset.translate))

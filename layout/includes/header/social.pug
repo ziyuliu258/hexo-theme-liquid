@@ -1,8 +1,15 @@
 each url, icon in theme.social
   -
     const [link, title, color] = url.split('||').map(i => trim(i))
-    const href = url_for(link)
     const iconStyle = color ? `color: ${color.replace(/[\'\"]/g, '')};` : ''
     const iconTitle = title || ''
-  a.social-icon(href=href target="_blank" title=iconTitle)
-    i(class=icon style=iconStyle)
+    const hasLink = link && !/^(?:javascript:|#$)/i.test(link)
+  if hasLink
+    a.social-icon(href=url_for(link) target="_blank" title=iconTitle)
+      i(class=icon style=iconStyle)
+  else if iconTitle
+    button.social-icon(type="button" data-copy=iconTitle title="点击复制" aria-label=iconTitle)
+      i(class=icon style=iconStyle)
+  else
+    span.social-icon
+      i(class=icon style=iconStyle)

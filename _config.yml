@@ -1182,6 +1182,11 @@ liquid:
   background:
     avif: ''
     preload: false
+    # Right-bottom button that swaps the site image for a solid color.
+    # Light and dark each keep their own color. The choice is remembered.
+    toggle: false
+    light: '#f6f6f6'
+    dark: '#1e1e1e'
 
   # Extra site-owned assets, relative to the blog root. Useful for small
   # per-site tweaks without modifying the theme.
