@@ -167,6 +167,27 @@
   opacity: 1;
 }
 
+/* 标题和返回按钮独立响应悬停，不继承父容器的蓝色 hover。 */
+#page-header.nav-fixed #nav #blog-info,
+#page-header.nav-fixed #nav #blog-info:hover {
+  color: var(--font-color);
+}
+
+#page-header #nav #blog-info .nav-page-title,
+#page-header #nav #blog-info .nav-back {
+  color: var(--font-color) !important;
+}
+
+#page-header #nav #blog-info .nav-page-title:hover,
+#page-header #nav #blog-info .nav-back:hover {
+  color: #666 !important;
+}
+
+[data-theme='dark'] #page-header #nav #blog-info .nav-page-title:hover,
+[data-theme='dark'] #page-header #nav #blog-info .nav-back:hover {
+  color: #ccc !important;
+}
+
 /* 正文标题随滚动缩小淡出，和导航栏里的小标题交接。 */
 #post-info .post-title {
   will-change: transform, opacity;
@@ -183,7 +204,8 @@
 
 #post .reading-heading-button {
   display: block;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   margin: 0;
   padding: 4px 0 8px;
   border: 0;
@@ -473,6 +495,19 @@ html.solid-bg:not([data-theme='dark']) #page-header #toggle-menu:hover {
   color: var(--solid-fg, #2c3138);
 }
 
+/* 页脚包装层原本单独指定浅色文字，不能只设置 #footer 的继承色。 */
+html.solid-bg:not([data-theme='dark']) #footer #footer-wrap,
+html.solid-bg:not([data-theme='dark']) #footer #footer-wrap a {
+  color: #505050;
+  text-shadow: none;
+}
+
+html.solid-bg[data-theme='dark'] #footer #footer-wrap,
+html.solid-bg[data-theme='dark'] #footer #footer-wrap a {
+  color: #c6c6c6;
+  text-shadow: none;
+}
+
 /* 纯色没有背景可透。白天用白卡片，黑夜用比背景略浅的实色。 */
 html.solid-bg #recent-posts .recent-post-item,
 html.solid-bg #recent-posts .home-announcement,
@@ -745,13 +780,35 @@ html[data-theme='light'] .layout .pagination > .space::before {
   text-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 }
 
-/* 分页玻璃底上的页码和箭头需要更清晰的对比。 */
-.layout #pagination .pagination > a:not(:hover) {
-  color: #075d95;
+/* 分页按钮的字、当前页和悬停状态统一使用中性灰。 */
+html .layout #pagination .pagination > a:not(.space) {
+  color: #343434;
 }
 
-[data-theme="dark"] .layout #pagination .pagination > a:not(:hover) {
-  color: #e3f3ff;
+html .layout #pagination .pagination > a:not(.space):hover,
+html .layout #pagination .pagination > a:not(.space):focus-visible {
+  background: #d4d4d4;
+  color: #171717;
+}
+
+html .layout #pagination .pagination > .page-number.current {
+  background: #555;
+  color: #fff;
+}
+
+html[data-theme='dark'] .layout #pagination .pagination > a:not(.space) {
+  color: #e4e4e4;
+}
+
+html[data-theme='dark'] .layout #pagination .pagination > a:not(.space):hover,
+html[data-theme='dark'] .layout #pagination .pagination > a:not(.space):focus-visible {
+  background: #4a4a4a;
+  color: #fff;
+}
+
+html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
+  background: #d1d1d1;
+  color: #1e1e1e;
 }
 
 #recent-posts .recent-post-item:hover,
@@ -1475,8 +1532,8 @@ html[data-theme='light'] .layout .pagination > .space::before {
 
 .music-dock-launcher svg {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 24px;
   fill: currentColor;
 }
 

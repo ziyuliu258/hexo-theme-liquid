@@ -16,7 +16,7 @@
   const headings = Array.from(article.querySelectorAll('h1, h2, h3, h4, h5, h6'))
   if (!headings.length) return
 
-  const NAV_HEIGHT = 60
+  let NAV_HEIGHT = 60
   // 定位后标题正好落在吸附位置附近，切换时不会有空白带。
   const OFFSET = 6
 
@@ -25,6 +25,23 @@
     const link = clone.querySelector('.headerlink')
     if (link) link.remove()
     return (clone.textContent || '').replace(/\u200b/g, '').replace(/\s+/g, ' ').trim()
+  }
+
+  // 按每行文字的实际边界命中，不把块级标题的整行留白当作链接。
+  const hitsText = (element, event) => {
+    if (event.detail === 0) return true // 保留键盘激活。
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT)
+    const range = document.createRange()
+    let node
+    while ((node = walker.nextNode())) {
+      if (!node.textContent.trim() || node.parentElement.closest('.headerlink')) continue
+      range.selectNodeContents(node)
+      for (const rect of range.getClientRects()) {
+        if (event.clientX >= rect.left && event.clientX <= rect.right &&
+            event.clientY >= rect.top && event.clientY <= rect.bottom) return true
+      }
+    }
+    return false
   }
 
   headings.forEach(heading => {
@@ -37,6 +54,7 @@
 
   // 置顶文字与正文共享 #post 的背景，不再绘制第二层玻璃。
   const rail = document.createElement('div')
+  rail.id = 'reading-heading-rail'
   rail.className = 'reading-heading-rail'
   const button = document.createElement('button')
   button.type = 'button'
@@ -52,6 +70,7 @@
   let guideTicking = false
 
   const measureHeadings = () => {
+    NAV_HEIGHT = document.body.classList.contains('read-mode') ? 20 : 60
     headingTops = headings.map(heading => heading.getBoundingClientRect().top + window.scrollY)
     const rect = article.getBoundingClientRect()
     articleTop = rect.top + window.scrollY
@@ -84,14 +103,15 @@
         railHeight = button.getBoundingClientRect().height
       }
       currentIndex = index
+      document.dispatchEvent(new CustomEvent('reading:section', { detail: { id: index >= 0 ? headings[index].id : '' } }))
     }
     const cut = index < 0 ? 0 : Math.max(0, threshold + railHeight - articleTop)
     article.style.clipPath = cut ? 'inset(' + cut + 'px -40px 0)' : ''
   }
 
   button.hidden = true
-  button.addEventListener('click', () => {
-    if (currentIndex < 0) return
+  button.addEventListener('click', event => {
+    if (currentIndex < 0 || !hitsText(button, event)) return
     const heading = headings[currentIndex]
     scrollToHeading(heading, false)
     window.history.pushState(null, '', '#' + heading.id)
@@ -104,6 +124,7 @@
   const pageHeader = document.getElementById('page-header')
   if (pageHeader) layoutObserver.observe(pageHeader)
   new MutationObserver(measureHeadings).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] })
+  new MutationObserver(measureHeadings).observe(document.body, { attributes: true, attributeFilter: ['class'] })
   if (document.fonts) document.fonts.ready.then(measureHeadings)
 
   window.addEventListener('scroll', () => {
@@ -135,6 +156,11 @@
     const link = event.target.closest('a[href^="#"]')
     const heading = event.target.closest('h1, h2, h3, h4, h5, h6')
     const fromArticle = heading && article.contains(heading)
+    if (fromArticle && !hitsText(heading, event)) {
+      event.preventDefault()
+      event.stopPropagation()
+      return
+    }
     const target = link ? headingForHash(link.getAttribute('href')) : (fromArticle ? heading : null)
     if (!target) return
 

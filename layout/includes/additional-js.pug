@@ -14,8 +14,11 @@ div
   if liquidJsConfig.enable !== false && liquidJsBackground.toggle && theme.background
     script(defer src=url_for("js/background-toggle.js") + "?v=" + liquid_asset_version("js/background-toggle.js"))
   if liquidJsConfig.enable !== false && globalPageType === 'post'
+    link(rel="stylesheet" href=url_for("css/reading-mode.css") + "?v=" + liquid_asset_version("css/reading-mode.css"))
     script(defer src=url_for("js/reading-guide.js") + "?v=" + liquid_asset_version("js/reading-guide.js"))
-  if liquidJsConfig.enable !== false && theme.copy && theme.copy.enable
+    script(defer src=url_for("js/reading-mode.js") + "?v=" + liquid_asset_version("js/reading-mode.js"))
+    script(defer src=url_for("js/article-export.js") + "?v=" + liquid_asset_version("js/article-export.js"))
+  if liquidJsConfig.enable !== false && (globalPageType === 'post' || (theme.copy && theme.copy.enable))
     //- 复制正文时导出 Markdown：先把 HTML 转换库放在 main.js 之前。
     script(src=url_for("vendor/extsrc/turndown.js"))
     script(src=url_for("vendor/extsrc/turndown-plugin-gfm.js"))
