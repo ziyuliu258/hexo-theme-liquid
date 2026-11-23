@@ -1,49 +1,71 @@
 script.
   (() => {
-    const runMermaid = ele => {
-      window.loadMermaid = true
-      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? '!{theme.mermaid.theme.dark}' : '!{theme.mermaid.theme.light}'
+    const styles = !{JSON.stringify({ themes: theme.mermaid.theme, variables: theme.mermaid.theme_variables, options: theme.mermaid.options })}
+    let library
+    let renderPass = 0
+    let renderQueue = Promise.resolve()
 
-      ele.forEach((item, index) => {
-        const mermaidSrc = item.firstElementChild
-        const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
-        const mermaidID = `mermaid-${index}`
-        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
-
-        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
-        const renderMermaid = svg => {
-          mermaidSrc.insertAdjacentHTML('afterend', svg)
+    const runMermaid = async (diagrams, pass) => {
+      if (pass !== renderPass || !diagrams[0].isConnected) return
+      if (!window.mermaid) {
+        try {
+          await (library ||= btf.getScript('!{url_for(theme.asset.mermaid)}'))
+        } catch (error) {
+          library = undefined
+          console.error('Could not load Mermaid', error)
+          return
         }
+      }
 
-        // mermaid v9 and v10 compatibility
-        typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+      if (pass !== renderPass || !diagrams[0].isConnected) return
+      const mode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+      mermaid.initialize({
+        ...styles.options,
+        startOnLoad: false,
+        theme: styles.themes[mode],
+        themeVariables: styles.variables?.[mode]
       })
+      for (const [index, diagram] of diagrams.entries()) {
+        if (pass !== renderPass || !diagram.isConnected) return
+        const source = diagram.firstElementChild
+        try {
+          const result = await mermaid.render(`mermaid-${pass}-${index}`, source.textContent)
+          if (pass !== renderPass || !diagram.isConnected) return
+          diagram.querySelector(':scope > svg')?.remove()
+          diagram.insertAdjacentHTML('beforeend', typeof result === 'string' ? result : result.svg)
+          result.bindFunctions?.(diagram)
+          source.hidden = true
+        } catch (error) {
+          console.error('Could not render Mermaid diagram', error)
+        }
+      }
     }
 
     const codeToMermaid = () => {
-      const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
-      if (codeMermaidEle.length === 0) return
-
-      codeMermaidEle.forEach(ele => {
-        const preEle = document.createElement('pre')
-        preEle.className = 'mermaid-src'
-        preEle.hidden = true
-        preEle.textContent = ele.textContent
-        const newEle = document.createElement('div')
-        newEle.className = 'mermaid-wrap'
-        newEle.appendChild(preEle)
-        ele.parentNode.replaceWith(newEle)
+      const blocks = document.querySelectorAll('#article-container pre > code.mermaid, #article-container pre > code.language-mermaid')
+      blocks.forEach(code => {
+        const source = code.parentElement
+        const diagram = document.createElement('div')
+        diagram.className = 'mermaid-wrap'
+        source.classList.add('mermaid-src')
+        source.replaceWith(diagram)
+        diagram.append(source)
       })
     }
 
     const loadMermaid = () => {
       if (!{theme.mermaid.code_write}) codeToMermaid()
-      const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
-      if ($mermaid.length === 0) return
+      const diagrams = document.querySelectorAll('#article-container .mermaid-wrap')
+      if (!diagrams.length) return
 
-      const runMermaidFn = () => runMermaid($mermaid)
-      btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
-      window.loadMermaid ? runMermaidFn() : btf.getScript('!{url_for(theme.asset.mermaid)}').then(runMermaidFn)
+      const render = () => {
+        const pass = ++renderPass
+        renderQueue = renderQueue.then(() => runMermaid(diagrams, pass)).catch(error => {
+          console.error('Could not render Mermaid diagrams', error)
+        })
+      }
+      btf.addGlobalFn('themeChange', render, 'mermaid')
+      render()
     }
 
     btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')

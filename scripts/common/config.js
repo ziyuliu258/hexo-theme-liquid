@@ -57,6 +57,16 @@ function statisticsConfig (theme) {
 function musicConfig (theme) {
   const config = liquidConfig(theme).music || {}
   const sync = config.sync || {}
+  const rawIds = []
+  if (Array.isArray(sync.playlist_ids)) {
+    for (const id of sync.playlist_ids) {
+      if (id !== undefined && id !== null && String(id).trim()) rawIds.push(String(id).trim())
+    }
+  }
+  if (sync.playlist_id !== undefined && sync.playlist_id !== null && String(sync.playlist_id).trim()) {
+    rawIds.push(String(sync.playlist_id).trim())
+  }
+  const playlistIds = [...new Set(rawIds)]
   return {
     enable: config.enable !== false,
     pagePath: normalizePath(config.page_path, DEFAULT_MUSIC_PAGE),
@@ -64,7 +74,8 @@ function musicConfig (theme) {
     sync: {
       enable: sync.enable === true,
       script: sync.script || 'tools/sync-music-playlist.py',
-      playlistId: sync.playlist_id ? String(sync.playlist_id) : ''
+      playlistId: playlistIds[0] || '',
+      playlistIds
     }
   }
 }

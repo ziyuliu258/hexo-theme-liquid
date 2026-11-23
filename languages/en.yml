@@ -35,14 +35,23 @@ post:
 
 search:
   title: Search
-  load_data: Loading Database
-  input_placeholder: Search for Posts
+  load_data: Loading search index…
+  input_placeholder: Search posts, tags, categories…
+  clear: Clear search
+  close: Close search
+  hint_navigate: Navigate
+  hint_open: Open
+  hint_close: Close
   algolia_search:
     hits_empty: 'No results found for: ${query}'
     hits_stats: '${hits} results found in ${time} ms'
   local_search:
-    hits_empty: 'No results found for: ${query}'
-    hits_stats: '${hits} articles found'
+    hits_empty: 'No results found for "${query}"'
+    hits_stats: '${hits} posts found'
+    indexed_stats: '${total} posts indexed'
+    load_error: 'Failed to load search index'
+    retry: 'Retry'
+    show_more: 'Show ${remaining} more results'
 
 pagination:
   prev: Previous

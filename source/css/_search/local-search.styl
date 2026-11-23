@@ -1,57 +1,464 @@
-#local-search
-  .search-dialog
-    .local-search-box
-      margin: 0 auto
-      max-width: 100%
-      width: 100%
+:root
+  --spotlight-bg: rgba(252, 252, 254, .82)
+  --spotlight-bg-solid: #ffffff
+  --spotlight-border: rgba(255, 255, 255, .64)
+  --spotlight-border-solid: rgba(0, 0, 0, .09)
+  --spotlight-rim: rgba(255, 255, 255, .86)
+  --spotlight-divider: rgba(0, 0, 0, .075)
+  --spotlight-mask: rgba(15, 18, 24, .28)
+  --spotlight-fg: #1d2129
+  --spotlight-muted: rgba(29, 33, 41, .58)
+  --spotlight-subtle: rgba(29, 33, 41, .42)
+  --spotlight-active-bg: rgba(0, 0, 0, .062)
+  --spotlight-kbd-bg: rgba(0, 0, 0, .05)
+  --spotlight-kbd-border: rgba(0, 0, 0, .1)
+  --spotlight-chip-bg: rgba(0, 0, 0, .055)
+  --spotlight-mark-bg: rgba(0, 0, 0, .095)
+  --spotlight-mark-fg: #111111
+  --spotlight-shadow: 0 28px 80px -14px rgba(15, 23, 42, .28), 0 8px 24px -6px rgba(15, 23, 42, .12), 0 0 0 .5px rgba(0, 0, 0, .08)
 
-      input
-        padding: 5px 14px
-        width: 100%
-        outline: none
-        border: 2px solid $search-color
-        border-radius: 40px
-        background: var(--search-bg)
-        color: var(--search-input-color)
-        -webkit-appearance: none
+[data-theme='dark']
+  --spotlight-bg: rgba(34, 34, 36, .84)
+  --spotlight-bg-solid: #2a2a2a
+  --spotlight-border: rgba(255, 255, 255, .14)
+  --spotlight-border-solid: rgba(255, 255, 255, .12)
+  --spotlight-rim: rgba(255, 255, 255, .12)
+  --spotlight-divider: rgba(255, 255, 255, .09)
+  --spotlight-mask: rgba(0, 0, 0, .54)
+  --spotlight-fg: #f0f0f2
+  --spotlight-muted: rgba(235, 235, 245, .64)
+  --spotlight-subtle: rgba(235, 235, 245, .42)
+  --spotlight-active-bg: rgba(255, 255, 255, .105)
+  --spotlight-kbd-bg: rgba(255, 255, 255, .08)
+  --spotlight-kbd-border: rgba(255, 255, 255, .14)
+  --spotlight-chip-bg: rgba(255, 255, 255, .085)
+  --spotlight-mark-bg: rgba(255, 255, 255, .18)
+  --spotlight-mark-fg: #ffffff
+  --spotlight-shadow: 0 32px 90px -12px rgba(0, 0, 0, .65), 0 10px 28px -6px rgba(0, 0, 0, .42), 0 0 0 .5px rgba(255, 255, 255, .08)
 
-    .search-wrap
+#local-search.spotlight-search
+  position: fixed
+  inset: 0
+  z-index: 1000
+  display: flex
+  align-items: flex-start
+  justify-content: center
+  padding: unquote('min(16vh, 140px)') 16px 24px
+  pointer-events: none
+
+  &[hidden]
+    display: none !important
+
+  &.is-open
+    pointer-events: auto
+
+    .spotlight-mask
+      opacity: 1
+
+    .spotlight-dialog
+      opacity: 1
+      transform: translate3d(0, 0, 0) scale(1)
+
+  .spotlight-mask
+    position: fixed
+    inset: 0
+    background: var(--spotlight-mask)
+    opacity: 0
+    transition: opacity .18s ease
+
+  .spotlight-dialog
+    position: relative
+    z-index: 1
+    display: flex
+    flex-direction: column
+    overflow: hidden
+    width: unquote('min(680px, 100%)')
+    max-height: unquote('min(74vh, 620px)')
+    border: 1px solid var(--spotlight-border)
+    border-radius: 22px
+    background: var(--spotlight-bg)
+    box-shadow: inset 0 1px 0 var(--spotlight-rim), var(--spotlight-shadow)
+    color: var(--spotlight-fg)
+    -webkit-backdrop-filter: blur(28px) saturate(180%)
+    backdrop-filter: blur(28px) saturate(180%)
+    opacity: 0
+    transform: translate3d(0, -10px, 0) scale(.975)
+    transform-origin: top center
+    transition: opacity .18s cubic-bezier(.16, 1, .3, 1), transform .22s cubic-bezier(.16, 1, .3, 1)
+    will-change: transform, opacity
+
+  .spotlight-bar
+    display: flex
+    flex: none
+    align-items: center
+    gap: 12px
+    padding: 13px 16px 13px 20px
+    min-height: 58px
+
+  .spotlight-icon
+    display: inline-flex
+    flex: none
+    align-items: center
+    justify-content: center
+    width: 22px
+    height: 22px
+    color: var(--spotlight-muted)
+    font-size: 1.05rem
+
+    &.is-loading i::before
+      content: '\f1ce'
+
+    &.is-loading i
+      animation: spotlight-spin .85s linear infinite
+
+  .spotlight-input-wrap
+    flex: 1
+    min-width: 0
+
+  .local-search-box--input
+    display: block
+    padding: 2px 0
+    width: 100%
+    outline: none
+    border: 0
+    background: transparent
+    color: var(--spotlight-fg)
+    caret-color: var(--spotlight-fg)
+    font-size: 1.08rem
+    font-weight: 450
+    line-height: 1.45
+    -webkit-appearance: none
+    appearance: none
+
+    &::placeholder
+      color: var(--spotlight-subtle)
+      font-weight: 400
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration
+      -webkit-appearance: none
+      appearance: none
+
+  .spotlight-clear
+    display: inline-flex
+    flex: none
+    align-items: center
+    justify-content: center
+    width: 26px
+    height: 26px
+    border-radius: 50%
+    color: var(--spotlight-subtle)
+    font-size: .95rem
+    transition: color .15s ease, background-color .15s ease
+
+    &[hidden]
       display: none
 
-    .local-search-hit-item
-      margin-left: 24px
-      padding-left: 3px
-      line-height: 1.8
+    &:hover,
+    &:focus-visible
+      background: var(--spotlight-active-bg)
+      color: var(--spotlight-fg)
 
-      &::marker
-        color: $search-color
-        font-weight: bold
-        font-style: italic
+  .spotlight-esc
+    display: inline-flex
+    flex: none
+    align-items: center
+    justify-content: center
+    padding: 0
+    color: var(--spotlight-muted)
 
-      a
-        color: var(--search-a-color)
+    kbd
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      padding: 3px 7px
+      border: 1px solid var(--spotlight-kbd-border)
+      border-radius: 6px
+      background: var(--spotlight-kbd-bg)
+      color: inherit
+      font-family: inherit
+      font-size: .68rem
+      font-weight: 600
+      letter-spacing: .04em
+      line-height: 1.2
+      transition: background-color .15s ease, color .15s ease
 
-        &:hover
-          color: $search-color
+    &:hover kbd,
+    &:focus-visible kbd
+      background: var(--spotlight-active-bg)
+      color: var(--spotlight-fg)
 
-      .search-result-title
-        font-weight: 600
+  .spotlight-clear:focus-visible,
+  .spotlight-esc:focus-visible,
+  .spotlight-more:focus-visible,
+  .spotlight-retry:focus-visible
+    outline: 2px solid currentColor
+    outline-offset: 2px
 
-      .search-result
-        margin: 0 0 8px
-        word-break: break-all
-        font-size: .9em
+  .spotlight-body
+    flex: 1
+    min-height: 0
+    overflow-y: auto
+    overscroll-behavior: contain
+    border-top: 1px solid var(--spotlight-divider)
+    padding: 8px
 
-    .search-result-list
-      overflow-y: overlay
-      margin: 0 -20px
-      padding: 0 22px
-      max-height: calc(80vh - 180px)
+    &[hidden]
+      display: none
 
-      +maxWidth768()
-        max-height: calc(var(--search-height) - 190px) !important
+  .spotlight-results
+    margin: 0
+    padding: 0
+
+  .spotlight-list
+    margin: 0
+    padding: 0
+    list-style: none
+
+  .spotlight-item
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    padding: 11px 14px
+    border-radius: 13px
+    color: var(--spotlight-fg)
+    text-decoration: none
+    transition: background-color .1s ease
+
+    &:hover
+      color: var(--spotlight-fg)
+
+    &.is-active
+      background: var(--spotlight-active-bg)
+
+      .spotlight-item-enter
+        opacity: .68
+
+  .spotlight-item-main
+    flex: 1
+    min-width: 0
+
+  .spotlight-item-head
+    display: flex
+    align-items: baseline
+    justify-content: space-between
+    gap: 12px
+
+  .spotlight-item-title
+    color: var(--spotlight-fg)
+    font-size: .96rem
+    font-weight: 600
+    line-height: 1.45
+    overflow: hidden
+    display: -webkit-box
+    -webkit-line-clamp: 2
+    -webkit-box-orient: vertical
+    word-break: break-word
+
+  .spotlight-item-date
+    flex: none
+    color: var(--spotlight-subtle)
+    font-size: .76rem
+    font-variant-numeric: tabular-nums
+    line-height: 1.45
+
+  .spotlight-item-snippet
+    margin: 4px 0 0
+    color: var(--spotlight-muted)
+    font-size: .84rem
+    line-height: 1.55
+    overflow: hidden
+    display: -webkit-box
+    -webkit-line-clamp: 2
+    -webkit-box-orient: vertical
+    word-break: break-word
+
+  .spotlight-item-meta
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 6px
+    margin-top: 6px
+
+  .spotlight-chip
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    padding: 1px 7px
+    border-radius: 6px
+    background: var(--spotlight-chip-bg)
+    color: var(--spotlight-muted)
+    font-size: .73rem
+    line-height: 1.55
+
+    i
+      font-size: .68rem
+      opacity: .75
+
+  .spotlight-item-enter
+    flex: none
+    align-self: center
+    color: var(--spotlight-subtle)
+    font-size: .82rem
+    line-height: 1
+    opacity: 0
+    transition: opacity .1s ease
+
+  .spotlight-empty
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 8px
+    padding: 36px 20px
+    color: var(--spotlight-muted)
+    font-size: .9rem
+    text-align: center
+
+    i
+      font-size: 1.45rem
+      opacity: .42
+
+    p
+      margin: 0
+
+  .spotlight-retry
+    margin-top: 4px
+    padding: 5px 14px
+    border: 1px solid var(--spotlight-kbd-border)
+    border-radius: 8px
+    background: var(--spotlight-kbd-bg)
+    color: var(--spotlight-fg)
+    font-size: .82rem
+    transition: background-color .15s ease
+
+    &:hover
+      background: var(--spotlight-active-bg)
+
+  .spotlight-more
+    display: block
+    margin: 6px auto 2px
+    padding: 8px 14px
+    width: 100%
+    border-radius: 10px
+    color: var(--spotlight-muted)
+    font-size: .82rem
+    text-align: center
+    transition: background-color .15s ease, color .15s ease
+
+    &:hover
+      background: var(--spotlight-active-bg)
+      color: var(--spotlight-fg)
+
+  .spotlight-footer
+    display: flex
+    flex: none
+    align-items: center
+    justify-content: space-between
+    gap: 12px
+    padding: 9px 18px
+    border-top: 1px solid var(--spotlight-divider)
+    color: var(--spotlight-subtle)
+    font-size: .75rem
+    line-height: 1.4
+
+  .spotlight-stats
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+  .spotlight-hints
+    display: inline-flex
+    flex: none
+    align-items: center
+    gap: 12px
+
+    span
+      display: inline-flex
+      align-items: center
+      gap: 4px
+
+    kbd
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      min-width: 19px
+      padding: 1px 5px
+      border: 1px solid var(--spotlight-kbd-border)
+      border-radius: 5px
+      background: var(--spotlight-kbd-bg)
+      color: var(--spotlight-muted)
+      font-family: inherit
+      font-size: .68rem
+      font-weight: 500
+      line-height: 1.35
+
+html.solid-bg
+  #local-search.spotlight-search .spotlight-dialog
+    background: var(--spotlight-bg-solid)
+    border-color: var(--spotlight-border-solid)
+    box-shadow: var(--spotlight-shadow)
+    -webkit-backdrop-filter: none
+    backdrop-filter: none
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)))
+  #local-search.spotlight-search .spotlight-dialog
+    background: var(--spotlight-bg-solid)
+
+@media (prefers-reduced-transparency: reduce)
+  #local-search.spotlight-search .spotlight-dialog
+    background: var(--spotlight-bg-solid)
+    -webkit-backdrop-filter: none
+    backdrop-filter: none
+
+@media (prefers-reduced-motion: reduce)
+  #local-search.spotlight-search
+    .spotlight-mask,
+    .spotlight-dialog
+      transition: none
+
+    .spotlight-icon.is-loading i
+      animation: none
+
++maxWidth768()
+  #local-search.spotlight-search
+    padding: unquote('max(12px, env(safe-area-inset-top)) 10px max(12px, env(safe-area-inset-bottom))')
+
+    .spotlight-dialog
+      max-height: unquote('calc(100dvh - max(24px, env(safe-area-inset-top) + env(safe-area-inset-bottom)))')
+      border-radius: 18px
+
+    .spotlight-bar
+      padding: 11px 12px 11px 14px
+      min-height: 52px
+      gap: 10px
+
+    .local-search-box--input
+      font-size: 1rem
+
+    .spotlight-item
+      padding: 10px 11px
+      border-radius: 11px
+
+    .spotlight-item-enter,
+    .spotlight-hints
+      display: none
+
+    .spotlight-footer
+      padding: 8px 14px
 
 .search-keyword
-  background: transparent
-  color: $search-keyword-highlight
-  font-weight: 600
+  padding: 0 2px
+  border-radius: 4px
+  background: var(--spotlight-mark-bg)
+  color: var(--spotlight-mark-fg)
+  font-weight: 650
+
+@keyframes spotlight-spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)

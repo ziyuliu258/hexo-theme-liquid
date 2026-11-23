@@ -1,5 +1,6 @@
 if theme.menu
   .menus_items
+    - let menuIdx = 0
     each value, label in theme.menu
       if typeof value !== 'object'
         .menus_item
@@ -25,3 +26,10 @@ if theme.menu
                   if childIcon
                     i.fa-fw(class=childIcon)
                   span= ' ' + lab
+      if includeSearch && menuIdx === 0
+        - const searchLabel = theme.search.label || _p('search.title')
+        #search-button
+          button.site-page.social-icon.search(type="button" title=`${searchLabel} (⌘K / Ctrl+K)` aria-label=searchLabel aria-haspopup="dialog" aria-controls=theme.search.use === 'local_search' ? 'local-search' : null aria-keyshortcuts="Meta+K Control+K")
+            i.fas.fa-search.fa-fw(aria-hidden="true")
+            span= ' ' + searchLabel
+      - menuIdx++

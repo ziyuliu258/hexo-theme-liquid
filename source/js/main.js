@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (init) {
       const blogInfoWidth = getAllWidth(document.querySelector('#blog-info > a').children)
-      const menusWidth = getAllWidth(document.getElementById('menus').children)
+      const menusWidth = getAllWidth(Array.from(document.getElementById('menus').children).filter(el => !el.classList.contains('nav-pill-glass') && !el.classList.contains('nav-hover-lens') && !el.classList.contains('nav-glass-canvas')))
       headerContentWidth = blogInfoWidth + menusWidth
       $nav = document.getElementById('nav')
     }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const highlightShrinkClass = isHighlightShrink === true ? 'closed' : ''
     const highlightShrinkEle = isHighlightShrink !== undefined ? '<i class="fas fa-angle-down expand"></i>' : ''
     const highlightCopyEle = highlightCopy ? '<div class="copy-notice"></div><i class="fas fa-paste copy-button"></i>' : ''
-    const highlightMacStyleEle = '<div class="macStyle"><div class="mac-close"></div><div class="mac-minimize"></div><div class="mac-maximize"></div></div>'
+    const highlightMacStyleEle = highlightMacStyle ? '<div class="macStyle"><div class="mac-close"></div><div class="mac-minimize"></div><div class="mac-maximize"></div></div>' : ''
     const highlightFullpageEle = highlightFullpage ? '<i class="fa-solid fa-up-right-and-down-left-from-center fullpage-button"></i>' : ''
 
     const alertInfo = (ele, text) => {
@@ -162,7 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isShowTool) {
         const hlTools = document.createElement('div')
         hlTools.className = `highlight-tools ${highlightShrinkClass}`
-        hlTools.innerHTML = highlightMacStyleEle + highlightShrinkEle + lang + highlightCopyEle + highlightFullpageEle
+        hlTools.innerHTML = highlightMacStyle
+          ? highlightMacStyleEle + highlightShrinkEle + lang + highlightCopyEle + highlightFullpageEle
+          : lang + highlightCopyEle + highlightFullpageEle + highlightShrinkEle
         btf.addEventListenerPjax(hlTools, 'click', highlightToolsFn)
         fragment.appendChild(hlTools)
       }
@@ -187,13 +189,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return
       }
 
-      if (isPrismjs) {
-        langName = item.getAttribute('data-language') || 'Code'
+      const rawLang = item.getAttribute('data-language')
+      if (rawLang) {
+        langName = rawLang
+      } else if (isPrismjs) {
+        langName = 'Code'
       } else {
         langName = item.getAttribute('class').split(' ')[1]
         if (langName === 'plain' || langName === undefined) langName = 'Code'
       }
-      createEle(`<div class="code-lang">${langName}</div>`, item)
+      const safeLang = String(langName).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]))
+      createEle(`<div class="code-lang">${safeLang}</div>`, item)
     })
   }
 
@@ -445,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         flag = ''
-        if (currentTop === 0) {
+        if (currentTop <= 16) {
           $header.classList.remove('nav-fixed', 'nav-visible')
         }
         $rightside.classList.remove('rightside-show')
@@ -666,6 +672,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // PJAX replaces the header, so handle the back button on the document.
+  document.addEventListener('click', event => {
+    if (!event.target.closest('#nav-back')) return
+
+    const navigation = window.navigation
+    if (navigation && navigation.currentEntry) {
+      const currentUrl = new URL(window.location.href)
+      currentUrl.hash = ''
+      const previousEntries = navigation.entries().slice(0, navigation.currentEntry.index)
+      for (const entry of previousEntries.reverse()) {
+        if (!entry.url) continue
+        const url = new URL(entry.url)
+        url.hash = ''
+        if (url.href === currentUrl.href) continue
+        navigation.traverseTo(entry.key).committed.catch(() => {
+          window.location.href = GLOBAL_CONFIG.root
+        })
+        return
+      }
+    } else if (window.history.length > 1) {
+      window.history.back()
+      return
+    }
+
+    window.location.href = GLOBAL_CONFIG.root
+  })
+
   document.addEventListener('click', async event => {
     const button = event.target.closest('.social-icon[data-copy]')
     if (!button) return
@@ -681,6 +714,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       showCopyState('复制失败')
     }
+  })
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('#nav-darkmode')) return
+    rightSideFn.darkmode()
   })
 
   document.getElementById('rightside').addEventListener('click', e => {

@@ -1,27 +1,62 @@
 .tag-cloud
   &-list
-    a
-      display: inline-block
-      margin: 2px
-      padding: 2px 7px
-      line-height: 1.7
-      transition: all .3s
-      addBorderRadius(5)
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 10px
+    text-align: left
+
+    a.tag-chip
+      display: inline-flex
+      align-items: center
+      gap: 7px
+      margin: 0
+      padding: 6px 13px
+      border: 1px solid rgba(128, 128, 128, .18)
+      border-radius: 999px
+      background: rgba(128, 128, 128, .06)
+      color: var(--font-color)
+      font-size: .92rem
+      font-weight: 500
+      line-height: 1.4
+      transition: background-color .18s ease, border-color .18s ease, transform .18s ease
 
       &:hover
-        background: var(--btn-bg) !important
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, .2)
-        color: var(--btn-color) !important
+        border-color: rgba(128, 128, 128, .36)
+        background: rgba(128, 128, 128, .14)
+        color: var(--font-color)
+        transform: translateY(-1px)
 
-      +maxWidth768()
-        zoom: .85
+      .tag-chip-count
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        min-width: 1.4em
+        padding: 0 5px
+        border-radius: 999px
+        background: rgba(128, 128, 128, .14)
+        color: var(--font-color)
+        opacity: .72
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+        font-size: .78em
+        font-variant-numeric: tabular-nums
+        line-height: 1.5
 
   &-title
-    font-size: 2.57em
+    font-size: 2.2em
 
     +maxWidth768()
-      font-size: 2em
+      font-size: 1.8em
 
-.page-title
-  & + .tag-cloud-list
-    text-align: left
+[data-theme='dark']
+  .tag-cloud-list
+    a.tag-chip
+      border-color: rgba(255, 255, 255, .12)
+      background: rgba(255, 255, 255, .06)
+
+      &:hover
+        border-color: rgba(255, 255, 255, .26)
+        background: rgba(255, 255, 255, .13)
+
+      .tag-chip-count
+        background: rgba(255, 255, 255, .12)

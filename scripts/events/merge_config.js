@@ -260,11 +260,13 @@ hexo.extend.filter.register('before_generate', () => {
     },
     search: {
       use: null,
+      label: null,
       placeholder: null,
       algolia_search: {
         hitsPerPage: 6
       },
       local_search: {
+        path: 'search.json',
         preload: false,
         top_n_per_article: 1,
         unescape: false,
@@ -436,6 +438,7 @@ hexo.extend.filter.register('before_generate', () => {
     font: {
       global_font_size: null,
       code_font_size: null,
+      font_link: null,
       font_family: null,
       code_font_family: null
     },
@@ -541,7 +544,7 @@ hexo.extend.filter.register('before_generate', () => {
     snackbar: {
       enable: false,
       position: 'bottom-left',
-      bg_light: '#49b1f5',
+      bg_light: '#555555',
       bg_dark: '#1f1f1f'
     },
     instantpage: false,

@@ -28,8 +28,14 @@ if theme.cloudflare_analytics
 if theme.microsoft_clarity
   link(rel="preconnect" href="//www.clarity.ms")
 
-if theme.blog_title_font && theme.blog_title_font.font_link && theme.blog_title_font.font_link.indexOf('//fonts.googleapis.com') != -1
+-
+  const preconnectFontLinks = [
+    ...(Array.isArray(theme.font && theme.font.font_link) ? theme.font.font_link : (theme.font && theme.font.font_link ? [theme.font.font_link] : [])),
+    ...(Array.isArray(theme.blog_title_font && theme.blog_title_font.font_link) ? theme.blog_title_font.font_link : (theme.blog_title_font && theme.blog_title_font.font_link ? [theme.blog_title_font.font_link] : []))
+  ]
+if preconnectFontLinks.some(href => String(href).indexOf('//fonts.googleapis.com') != -1)
   link(rel="preconnect" href="//fonts.googleapis.com" crossorigin='')
+  link(rel="preconnect" href="//fonts.gstatic.com" crossorigin='')
 
 - const preconnectStats = liquid_stats()
 if preconnectStats.enable && (preconnectStats.siteUv || preconnectStats.sitePv || preconnectStats.pagePv)

@@ -1,24 +1,38 @@
 nav#nav
+  .nav-bar-glass(aria-hidden="true")
   span#blog-info
     a.nav-site-title(href=url_for('/'))
       if theme.nav.logo
         img.site-icon(src=url_for(theme.nav.logo) alt='Logo')
       if theme.nav.display_title
         span.site-name=config.title
+      else if globalPageType === 'home'
+        span.site-name.nav-home-title=config.title
     if globalPageType === 'post'
       button#nav-back.nav-back(type="button" title=_p('rightside.back_page') aria-label=_p('rightside.back_page'))
         i.fas.fa-chevron-left
       a.nav-page-title(href='#')
         span.site-name=(page.title || config.title)
   #menus
-    if theme.search.use
-      #search-button
-        span.site-page.social-icon.search
-          i.fas.fa-search.fa-fw
-          span= ' ' + _p('search.title')
+    canvas.nav-glass-canvas(aria-hidden="true")
+    .nav-pill-glass(aria-hidden="true")
+    .nav-hover-lens(aria-hidden="true")
+    if theme.darkmode.enable && theme.darkmode.button
+      #nav-darkmode
+        button.site-page.social-icon.nav-darkmode-btn(type="button" title=_p('rightside.night_mode_title') aria-label=_p('rightside.night_mode_title'))
+          svg.nav-theme-icon.icon-light(viewBox="0.5 0.5 23 23" aria-hidden="true" focusable="false")
+            circle(cx="12" cy="12" r="4" fill="currentColor")
+            path(d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" fill="none")
+          svg.nav-theme-icon.icon-dark(viewBox="2 2.5 19.5 19.5" aria-hidden="true" focusable="false")
+            path(d="M20.354 15.354A9 9 0 0 1 8.646 3.646 9.003 9.003 0 0 0 12 21a9.003 9.003 0 0 0 8.354-5.646Z" fill="currentColor")
     if theme.menu
-      != partial('includes/header/menu_item', {}, {cache: true})
-
+      != fragment_cache('navMenuItems', () => partial('includes/header/menu_item', { includeSearch: Boolean(theme.search.use) }))
       #toggle-menu
         span.site-page
           i.fas.fa-bars.fa-fw
+    else if theme.search.use
+      - const searchLabel = theme.search.label || _p('search.title')
+      #search-button
+        button.site-page.social-icon.search(type="button" title=`${searchLabel} (⌘K / Ctrl+K)` aria-label=searchLabel aria-haspopup="dialog" aria-controls=theme.search.use === 'local_search' ? 'local-search' : null aria-keyshortcuts="Meta+K Control+K")
+          i.fas.fa-search.fa-fw(aria-hidden="true")
+          span= ' ' + searchLabel

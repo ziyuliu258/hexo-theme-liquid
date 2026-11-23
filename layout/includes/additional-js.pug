@@ -4,21 +4,22 @@
 - const liquidJsBackground = liquidJsConfig.background || {}
 - const liquidJsStats = liquid_stats()
 - const liquidJsMusic = liquid_music()
+- const loadReadingTools = globalPageType === 'post' || theme.pjax.enable
 div
   script(src=url_for(theme.asset.utils))
-  script(src=url_for(theme.asset.main))
+  script(src=url_for(theme.asset.main) + "?v=" + liquid_asset_version("js/main.js"))
   if liquidJsConfig.enable !== false && liquidJsGlass.enable !== false
     script(defer src=url_for("js/liquid-glass.js") + "?v=" + liquid_asset_version("js/liquid-glass.js"))
   if liquidJsConfig.enable !== false && liquidJsMotion.enable !== false
     script(defer src=url_for("js/aside-motion.js") + "?v=" + liquid_asset_version("js/aside-motion.js"))
   if liquidJsConfig.enable !== false && liquidJsBackground.toggle && theme.background
     script(defer src=url_for("js/background-toggle.js") + "?v=" + liquid_asset_version("js/background-toggle.js"))
-  if liquidJsConfig.enable !== false && globalPageType === 'post'
+  if liquidJsConfig.enable !== false && loadReadingTools
     link(rel="stylesheet" href=url_for("css/reading-mode.css") + "?v=" + liquid_asset_version("css/reading-mode.css"))
     script(defer src=url_for("js/reading-guide.js") + "?v=" + liquid_asset_version("js/reading-guide.js"))
     script(defer src=url_for("js/reading-mode.js") + "?v=" + liquid_asset_version("js/reading-mode.js"))
     script(defer src=url_for("js/article-export.js") + "?v=" + liquid_asset_version("js/article-export.js"))
-  if liquidJsConfig.enable !== false && (globalPageType === 'post' || (theme.copy && theme.copy.enable))
+  if liquidJsConfig.enable !== false && (loadReadingTools || (theme.copy && theme.copy.enable))
     //- 复制正文时导出 Markdown：先把 HTML 转换库放在 main.js 之前。
     script(src=url_for("vendor/extsrc/turndown.js"))
     script(src=url_for("vendor/extsrc/turndown-plugin-gfm.js"))

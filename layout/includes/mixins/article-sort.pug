@@ -16,8 +16,7 @@ mixin articleSort(posts)
             else
               div(style=`background: ${article.cover}`)
         .article-sort-item-info
-          .article-sort-item-time
-            i.far.fa-calendar-alt
-            time.post-meta-date-created(datetime=date_xml(article.date) title=_p('post.created') + ' ' + full_date(article.date))= date(article.date, config.date_format)
           a.article-sort-item-title(href=url_for(article.path) title=title)= title
+          .article-sort-item-time
+            time.post-meta-date-created(datetime=date_xml(article.date) title=_p('post.created') + ' ' + full_date(article.date))= date(article.date, config.date_format)
     - })

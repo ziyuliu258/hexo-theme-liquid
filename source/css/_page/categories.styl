@@ -1,37 +1,86 @@
 .category-lists
   .category-title
-    font-size: 2.57em
+    margin-bottom: 20px
+    font-size: 2.2em
 
     +maxWidth768()
-      font-size: 2em
+      font-size: 1.8em
+
+  ul
+    margin: 0
+    padding: 0
+    list-style: none
+
+    ul
+      position: relative
+      z-index: 1
+      margin: 4px 0 6px 14px
+      padding-left: 14px
+      border-left: 1px solid rgba(128, 128, 128, .16)
+
+    li
+      position: relative
+      display: flex
+      flex-wrap: wrap
+      align-items: center
+      justify-content: space-between
+      gap: 12px
+      margin: 2px -12px
+      padding: 12px 14px
+      border-radius: 10px
+      transition: background-color .18s ease
+
+      &:before
+        content: none
+
+      &:hover
+        background: rgba(128, 128, 128, .08)
+
+        & > a
+          color: $text-hover
+
+      & > ul
+        flex-basis: 100%
 
   .category-list
     margin-bottom: 0
 
     a
+      flex: 1
+      min-width: 0
       color: var(--font-color)
-
-      &:hover
-        color: $text-hover
-
-    .category-list-count
-      margin-left: 8px
-      color: var(--card-meta)
-
-      &:before
-        content: '('
+      font-size: 1.04em
+      font-weight: 500
+      line-height: 1.5
+      transition: color .18s ease
 
       &:after
-        content: ')'
+        position: absolute
+        inset: 0
+        content: ''
 
-  ul
-    padding: 0 0 0 20px
-    @extend .list-beauty
+    .category-list-count
+      flex-shrink: 0
+      min-width: 2em
+      padding: 2px 9px
+      border-radius: 999px
+      background: rgba(128, 128, 128, .12)
+      color: var(--font-color)
+      opacity: .72
+      text-align: center
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+      font-size: .82em
+      font-variant-numeric: tabular-nums
+      line-height: 1.4
 
+[data-theme='dark']
+  .category-lists
     ul
-      padding-left: 4px
+      ul
+        border-left-color: rgba(255, 255, 255, .12)
 
-    li
-      position: relative
-      margin: 6px 0
-      padding: .12em .4em .12em 1.4em
+      li:hover
+        background: rgba(255, 255, 255, .07)
+
+    .category-list .category-list-count
+      background: rgba(255, 255, 255, .10)

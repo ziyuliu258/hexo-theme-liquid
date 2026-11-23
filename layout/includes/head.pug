@@ -49,7 +49,7 @@ if (theme.pwa && theme.pwa.enable)
   !=partial('includes/head/pwa', {}, {cache: true})
 
 //- main css
-link(rel='stylesheet', href=url_for(theme.asset.main_css))
+link(rel='stylesheet', href=url_for(theme.asset.main_css) + "?v=" + liquid_stylesheet_version())
 link(rel='stylesheet', href=url_for(theme.asset.fontawesome))
 
 if (theme.snackbar && theme.snackbar.enable)
@@ -70,8 +70,14 @@ if theme.lightbox === 'viewer'
 !=partial('includes/head/analytics', {}, {cache: true})
 
 //- font
-if theme.blog_title_font && theme.blog_title_font.font_link
-  link(rel='stylesheet' href=url_for(theme.blog_title_font.font_link) media="print" onload="this.media='all'")
+-
+  const collectFontLinks = value => Array.isArray(value) ? value.filter(Boolean) : (value ? [value] : [])
+  const fontLinks = [
+    ...collectFontLinks(theme.font && theme.font.font_link),
+    ...collectFontLinks(theme.blog_title_font && theme.blog_title_font.font_link)
+  ]
+each fontHref in fontLinks
+  link(rel='stylesheet' href=url_for(fontHref) media="print" onload="this.media='all'")
 
 //- global config
 !=partial('includes/head/config', {}, {cache: true})

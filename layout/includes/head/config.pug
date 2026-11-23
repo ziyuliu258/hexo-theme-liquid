@@ -20,8 +20,10 @@
   let localSearch = 'undefined'
   if (theme.search.use === 'local_search') {
     const { CDN, preload, top_n_per_article, unescape } = theme.search.local_search
+    const searchVersion = liquid_search_version()
+    const resolvedSearchUrl = CDN || (url_for(liquid_search_path()) + (searchVersion ? `?v=${searchVersion}` : ''))
     localSearch = JSON.stringify({
-      path: CDN || config.root + config.search.path,
+      path: resolvedSearchUrl,
       preload,
       top_n_per_article,
       unescape,
@@ -29,6 +31,11 @@
         // search languages
         hits_empty: _p("search.local_search.hits_empty"),
         hits_stats: _p("search.local_search.hits_stats"),
+        load_data: _p("search.load_data"),
+        indexed_stats: _p("search.local_search.indexed_stats"),
+        load_error: _p("search.local_search.load_error"),
+        retry: _p("search.local_search.retry"),
+        show_more: _p("search.local_search.show_more"),
       }
     })
   }

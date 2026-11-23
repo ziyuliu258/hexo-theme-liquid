@@ -1,22 +1,40 @@
-#local-search
-  .search-dialog
-    nav.search-nav
-      span.search-dialog-title= _p('search.title')
-      span#loading-status
-      button.search-close-button
-        i.fas.fa-times
+#local-search.spotlight-search(hidden aria-hidden="true")
+  #search-mask.spotlight-mask
+  .search-dialog.spotlight-dialog(role="dialog" aria-modal="true" aria-label=theme.search.placeholder || _p("search.title"))
+    .spotlight-bar
+      span.spotlight-icon(aria-hidden="true")
+        i.fas.fa-search
+      #local-search-input.spotlight-input-wrap
+        input.local-search-box--input(
+          type="search"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          enterkeyhint="search"
+          placeholder=theme.search.placeholder || _p("search.input_placeholder")
+          aria-label=theme.search.placeholder || _p("search.input_placeholder")
+          aria-autocomplete="list"
+          aria-controls="local-search-results"
+        )
+      button.spotlight-clear(type="button" hidden aria-label=_p("search.clear"))
+        i.fas.fa-times-circle(aria-hidden="true")
+      button.search-close-button.spotlight-esc(type="button" aria-label=_p("search.close"))
+        kbd ESC
+    .spotlight-body(hidden)
+      #local-search-results.spotlight-results(role="listbox")
+    .spotlight-footer
+      #local-search-stats-wrap.spotlight-stats(aria-live="polite")
+      .spotlight-hints(aria-hidden="true")
+        span
+          kbd ↑
+          kbd ↓
+          = ' ' + _p("search.hint_navigate")
+        span
+          kbd ↵
+          = ' ' + _p("search.hint_open")
+        span
+          kbd ESC
+          = ' ' + _p("search.hint_close")
 
-    #loading-database.text-center
-      i.fas.fa-spinner.fa-pulse
-      span= '  ' + _p("search.load_data")
-
-    .search-wrap
-      #local-search-input
-        .local-search-box
-          input(placeholder=theme.search.placeholder || _p("search.input_placeholder") type="text").local-search-box--input
-      hr
-      #local-search-results
-      #local-search-stats-wrap
-  #search-mask
-
-  script(src=url_for(theme.asset.local_search))
+script(defer src=url_for(theme.asset.local_search) + "?v=" + liquid_asset_version("js/search/local-search.js"))

@@ -1,115 +1,127 @@
 .article-sort
-  margin-left: 10px
-  padding-left: 20px
-  border-left: 2px solid lighten($light-blue, 20)
+  margin: 0
+  padding: 0
+  border: none
 
   &-title
-    position: relative
-    margin-left: 10px
-    padding-bottom: 20px
-    padding-left: 20px
-    font-size: 1.72em
-
-    &:hover
-      &:before
-        border-color: var(--pseudo-hover)
-
-    &:before
-      position: absolute
-      top: calc(((100% - 36px) / 2))
-      left: -9px
-      z-index: 1
-      width: w = 10px
-      height: h = w
-      border: .5 * w solid $light-blue
-      border-radius: w
-      background: var(--card-bg)
-      content: ''
-      line-height: h
-      transition: all .2s ease-in-out
-
-    &:after
-      position: absolute
-      bottom: 0
-      left: 0
-      z-index: 0
-      width: 2px
-      height: 1.5em
-      background: lighten($light-blue, 20)
-      content: ''
+    margin: 0 0 24px
+    padding: 0 0 14px
+    border-bottom: 1px solid rgba(128, 128, 128, .18)
+    color: var(--font-color)
+    font-size: 1.48em
+    font-weight: 600
+    letter-spacing: -.01em
+    line-height: 1.35
 
   &-item
     position: relative
     display: flex
     align-items: center
-    margin: 0 0 20px 10px
-    transition: all .2s ease-in-out
+    gap: 14px
+    margin: 2px -12px
+    padding: 11px 12px
+    border-radius: 10px
+    transition: background-color .18s ease
 
-    &:hover
-      &:before
-        border-color: var(--pseudo-hover)
+    &:not(.year):hover
+      background: rgba(128, 128, 128, .08)
 
-    &:before
-      $w = 6px
-      position: absolute
-      left: calc(-20px - 17px)
-      width: w = $w
-      height: h = w
-      border: .5 * w solid $light-blue
-      border-radius: w
-      background: var(--card-bg)
-      content: ''
-      transition: all .2s ease-in-out
+      .article-sort-item-title
+        color: $text-hover
+
+      .article-sort-item-time
+        opacity: .82
 
     &.no-article-cover
-      height: 80px
+      height: auto
 
       .article-sort-item-info
         padding: 0
 
     &.year
-      font-size: 1.43em
-      margin-bottom: 10px
-
-      &:hover
-        &:before
-          border-color: $light-blue
-
-      &:before
-        border-color: var(--pseudo-hover)
-
-    &-time
-      color: var(--card-meta)
-      font-size: .85em
-
-      time
-        padding-left: 6px
-        cursor: default
-
-    &-title
-      @extend .limit-more-line
+      margin: 28px 0 8px
+      padding: 0 0 8px
+      border-bottom: 1px solid rgba(128, 128, 128, .12)
+      border-radius: 0
       color: var(--font-color)
-      font-size: 1.05em
-      transition: all .3s
-      -webkit-line-clamp: 2
+      opacity: .56
+      font-size: 1.06em
+      font-weight: 600
+      font-variant-numeric: tabular-nums
+      letter-spacing: .04em
+      line-height: 1.4
 
-      &:hover
-        color: $text-hover
-        transform: translateX(10px)
+      &:first-child
+        margin-top: 0
 
-    &-img
-      overflow: hidden
-      width: 100px
-      height: 70px
-      addBorderRadius()
+    &-info
+      flex: 1
+      min-width: 0
+      display: flex
+      align-items: baseline
+      justify-content: space-between
+      gap: 20px
 
       +maxWidth768()
-        width: 70px
-        height: 70px
+        flex-direction: column
+        align-items: flex-start
+        gap: 3px
+
+    &-title
+      flex: 1
+      min-width: 0
+      @extend .limit-more-line
+      color: var(--font-color)
+      font-size: 1.02em
+      font-weight: 500
+      line-height: 1.5
+      transition: color .18s ease
+      -webkit-line-clamp: 2
+
+      &:after
+        position: absolute
+        inset: 0
+        content: ''
+
+    &-time
+      flex-shrink: 0
+      color: var(--font-color)
+      opacity: .5
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+      font-size: .82em
+      font-variant-numeric: tabular-nums
+      letter-spacing: -.01em
+      white-space: nowrap
+      transition: opacity .18s ease
+
+      time
+        padding-left: 0
+        cursor: pointer
+
+    &-img
+      position: relative
+      z-index: 1
+      flex-shrink: 0
+      overflow: hidden
+      width: 72px
+      height: 48px
+      border-radius: 8px
+
+      +maxWidth768()
+        width: 64px
+        height: 46px
 
       :first-child
         @extend .imgHover
 
-    &-info
-      flex: 1
-      padding: 0 16px
+[data-theme='dark']
+  .article-sort
+    &-title
+      border-bottom-color: rgba(255, 255, 255, .12)
+
+    &-item
+      &:not(.year):hover
+        background: rgba(255, 255, 255, .07)
+
+      &.year
+        border-bottom-color: rgba(255, 255, 255, .09)

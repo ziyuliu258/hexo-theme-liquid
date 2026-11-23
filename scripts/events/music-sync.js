@@ -15,7 +15,10 @@ hexo.extend.filter.register('before_generate', () => {
 
   const script = path.resolve(hexo.base_dir, config.sync.script)
   const args = [script]
-  if (config.sync.playlistId) args.push('--playlist-id', config.sync.playlistId)
+  const ids = (config.sync.playlistIds && config.sync.playlistIds.length)
+    ? config.sync.playlistIds
+    : (config.sync.playlistId ? [config.sync.playlistId] : [])
+  for (const id of ids) args.push('--playlist-id', id)
 
   hexo.log.info('正在更新音乐歌单…')
   const result = spawnSync('python3', args, {

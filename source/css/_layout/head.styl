@@ -48,20 +48,6 @@
     +minWidth768()
       font-size: 1.72em
 
-  #site_social_icons
-    display: none
-    margin: 0 auto
-    text-align: center
-
-    +maxWidth768()
-      display: block
-
-    .social-icon
-      margin: 0 10px
-      color: var(--light-grey)
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, .15)
-      font-size: 1.43em
-
   #scroll-down
     position: absolute
     bottom: 10px
@@ -137,6 +123,7 @@
 
       a,
       span.site-page,
+      button.site-page,
       .site-name
         color: var(--font-color)
         text-shadow: none
@@ -156,7 +143,7 @@
         color: var(--font-color)
 
         &:hover
-          color: $light-blue
+          color: $text-hover
 
         .site-name
           text-shadow: none
@@ -169,17 +156,18 @@
 
       a,
       span.site-page,
+      button.site-page,
       #toggle-menu
         color: var(--font-color)
         text-shadow: none
 
         &:hover
-          color: $light-blue
+          color: $text-hover
 
     &.fixed
       #nav
         top: 0
-        transition: all .5s
+        transition: opacity .25s ease
 
   &.nav-visible:not(.fixed)
     #nav
@@ -295,7 +283,7 @@
   height: 60px
   font-size: 1.3em
   opacity: 0
-  transition: all .5s
+  transition: opacity .25s ease
 
   +maxWidth768()
     padding: 0 16px
@@ -318,14 +306,15 @@
 
   #toggle-menu
     display: none
-    padding: 2px 0 0 6px
-    vertical-align: top
+    padding: 0 0 0 14px
+    line-height: 1
 
     &:hover
       color: var(--white)
 
   a,
-  span.site-page
+  span.site-page,
+  button.site-page
     color: var(--light-grey)
 
     &:hover
@@ -335,12 +324,18 @@
     text-shadow: 2px 2px 4px rgba($dark-black, .15)
     font-weight: bold
 
+  #menus
+    display: inline-flex
+    align-items: center
+
   .menus_items
-    display: inline
+    display: inline-flex
+    align-items: center
 
     .menus_item
       position: relative
-      display: inline-block
+      display: inline-flex
+      align-items: center
       padding: 0 0 0 14px
 
       &:hover
@@ -351,11 +346,14 @@
           transform: rotate(180deg)
 
       & > span > i:last-child
-        padding: 4px
+        padding: 0
+        margin-left: 1px
+        font-size: .82em
         transition: transform .3s
 
       .menus_item_child
         position: absolute
+        top: 100%
         right: 0
         display: none
         margin-top: 8px
@@ -368,7 +366,7 @@
 
         &:before
           position: absolute
-          top: -8px
+          top: -12px
           left: 0
           width: 100%
           height: 20px
@@ -398,41 +396,105 @@
 
   &.hide-menu
     #toggle-menu
-      display: inline-block !important
+      display: inline-flex !important
+      align-items: center
 
       .site-page
         font-size: inherit
 
-    .menus_items
+    .menus_items > .menus_item
       display: none
 
     #search-button span:not(.site-page)
       display: none
 
+  #nav-darkmode
+    display: inline-flex
+    align-items: center
+    padding: 0
+
+    button.site-page
+      min-width: 24px
+      font-family: inherit
+
+      &:focus-visible
+        outline: 2px solid currentColor
+        outline-offset: 4px
+        border-radius: 4px
+
+    .nav-theme-icon
+      width: 1.12em
+      height: 1.12em
+      display: block
+      flex-shrink: 0
+      vertical-align: 0
+      overflow: visible
+
+    .icon-dark
+      display: none
+
+    .icon-light
+      display: block
+
   #search-button
-    display: inline
+    display: inline-flex
+    align-items: center
     padding: 0 0 0 14px
+
+    button.site-page
+      font-family: inherit
+
+      &:focus-visible
+        outline: 2px solid currentColor
+        outline-offset: 4px
+        border-radius: 4px
 
   .site-page
     position: relative
-    padding-bottom: 6px
+    padding: 6px 0
+    line-height: 1.4
     text-shadow: 1px 1px 2px rgba($dark-black, .3)
     font-size: .78em
     cursor: pointer
 
     &:not(.child)
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      gap: .3em
+      height: 36px
+      padding: 0
+      line-height: 1
+
+      & > i
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        line-height: 1
+
+      & > span
+        line-height: 1
+
       &:after
         position: absolute
-        bottom: 0
+        bottom: 4px
         left: 0
-        z-index: -1
+        z-index: 0
         width: 0
-        height: 3px
+        height: 2.5px
         background-color: lighten($theme-color, 30%)
         content: ''
-        transition: all .3s ease-in-out
+        pointer-events: none
+        transition: width .3s ease-in-out
         addBorderRadius()
 
       &:hover
         &:after
           width: 100%
+
+[data-theme='dark'] #nav #nav-darkmode
+  .icon-light
+    display: none
+
+  .icon-dark
+    display: block

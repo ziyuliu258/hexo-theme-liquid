@@ -130,37 +130,70 @@
   transform: translateX(0);
 }
 
-@media screen and (max-width: 1300px) {
-  #article-container h1::before,
-  #article-container h2::before,
-  #article-container h3::before,
-  #article-container h4::before,
-  #article-container h5::before,
-  #article-container h6::before {
-    content: none;
+@media screen and (max-width: 768px) {
+  #article-container :is(h1, h2, h3, h4, h5, h6)::before {
+    right: calc(100% + 2px);
+    font-size: 0.5em;
   }
 }
 
-/* 吸顶导航里的返回箭头：只在收起后出现。 */
+/* 吸顶导航里的返回箭头：只在收起后出现，与标题和右侧菜单共享同一高度与水平中线。 */
+#page-header.nav-fixed #nav #blog-info {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  min-width: 0;
+  padding-right: 16px;
+  overflow: hidden;
+}
+
 #nav .nav-back {
   display: none;
   align-items: center;
   justify-content: center;
-  margin-right: 4px;
-  padding: 0 4px;
+  flex-shrink: 0;
+  width: 28px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
   border: 0;
   background: none;
   color: inherit;
-  font-size: 0.82em;
+  font-size: 0.88em;
   line-height: 1;
-  vertical-align: middle;
-  opacity: 0.62;
+  opacity: 0.65;
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
+#nav .nav-back i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
 #page-header.nav-fixed #nav .nav-back {
   display: inline-flex;
+}
+
+#page-header.nav-fixed #nav #blog-info > a.nav-page-title {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  min-width: 0;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+#page-header.nav-fixed #nav #blog-info > a.nav-page-title .site-name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 #nav .nav-back:hover {
@@ -262,7 +295,7 @@ html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
   background: #2a2a2a;
 }
 
-/* 只有阅读文章时的正文用宋体，其余页面一律黑体。 */
+/* 只有阅读文章时的正文用思源宋体，其余页面一律思源黑体。 */
 #post #article-container {
   font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", serif;
 }
@@ -272,19 +305,6 @@ html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
 #post #article-container code,
 #post #article-container kbd {
   font-family: "JetBrains Mono", "Consolas", monospace;
-}
-
-/* 分类/系列列表的圆点也改成中性灰。 */
-.category-lists ul li::before {
-  border-color: rgba(128, 128, 128, 0.55) !important;
-}
-
-.category-lists ul li:hover::before {
-  border-color: var(--font-color) !important;
-}
-
-[data-theme='dark'] .category-lists ul li::before {
-  border-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 /* 行内代码改成中性灰，不再用红色。代码块仍保留高亮配色。 */
@@ -300,6 +320,118 @@ html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
 [data-theme='dark'] .container :not(pre) > code {
   color: #e8e8e8;
   background: rgba(255, 255, 255, 0.14);
+}
+
+/* 代码块：在内置 light 主题基础上微调为朴素中性灰，并补齐黑夜语法配色。 */
+:root {
+  --hl-color: #24292f;
+  --hl-bg: #f6f6f7;
+  --hltools-bg: #efefeff2;
+  --hltools-color: rgba(36, 41, 47, 0.62);
+  --hlnumber-bg: #f6f6f7;
+  --hlnumber-color: rgba(36, 41, 47, 0.34);
+  --hlscrollbar-bg: rgba(0, 0, 0, 0.16);
+  --hlexpand-bg: linear-gradient(180deg, rgba(246, 246, 247, 0.55), rgba(246, 246, 247, 0.96));
+}
+
+[data-theme='dark'] {
+  --hl-color: rgba(255, 255, 255, 0.86);
+  --hl-bg: #222224;
+  --hltools-bg: #29292c;
+  --hltools-color: rgba(255, 255, 255, 0.56);
+  --hlnumber-bg: #222224;
+  --hlnumber-color: rgba(255, 255, 255, 0.32);
+  --hlscrollbar-bg: rgba(255, 255, 255, 0.18);
+  --hlexpand-bg: linear-gradient(180deg, rgba(34, 34, 36, 0.55), rgba(34, 34, 36, 0.96));
+}
+
+#article-container figure.highlight,
+.container figure.highlight {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+[data-theme='dark'] #article-container figure.highlight,
+[data-theme='dark'] .container figure.highlight {
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+#article-container .highlight-tools,
+.container .highlight-tools {
+  height: 36px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='dark'] #article-container .highlight-tools,
+[data-theme='dark'] .container .highlight-tools {
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+
+#article-container .highlight-tools .code-lang,
+.container .highlight-tools .code-lang {
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-transform: none;
+  padding: 0;
+}
+
+#article-container .highlight-tools i,
+.container .highlight-tools i {
+  opacity: 0.72;
+}
+
+#article-container .highlight-tools i:hover,
+.container .highlight-tools i:hover {
+  color: var(--hl-color);
+  opacity: 1;
+}
+
+[data-theme='dark'] figure.highlight pre .comment {
+  color: #8b949e;
+}
+
+[data-theme='dark'] figure.highlight pre .keyword,
+[data-theme='dark'] figure.highlight pre .title,
+[data-theme='dark'] figure.highlight pre .tag {
+  color: #79c0ff;
+}
+
+[data-theme='dark'] figure.highlight pre .variable,
+[data-theme='dark'] figure.highlight pre .attribute,
+[data-theme='dark'] figure.highlight pre .regexp,
+[data-theme='dark'] figure.highlight pre .tag .name,
+[data-theme='dark'] figure.highlight pre .css .class {
+  color: #ff7b72;
+}
+
+[data-theme='dark'] figure.highlight pre .number,
+[data-theme='dark'] figure.highlight pre .preprocessor,
+[data-theme='dark'] figure.highlight pre .literal,
+[data-theme='dark'] figure.highlight pre .params,
+[data-theme='dark'] figure.highlight pre .constant,
+[data-theme='dark'] figure.highlight pre .command {
+  color: #ffa657;
+}
+
+[data-theme='dark'] figure.highlight pre .built_in {
+  color: #e3b341;
+}
+
+[data-theme='dark'] figure.highlight pre .string,
+[data-theme='dark'] figure.highlight pre .value,
+[data-theme='dark'] figure.highlight pre .header,
+[data-theme='dark'] figure.highlight pre .special,
+[data-theme='dark'] figure.highlight pre .formula {
+  color: #7ee787;
+}
+
+[data-theme='dark'] figure.highlight pre .function,
+[data-theme='dark'] figure.highlight pre .meta,
+[data-theme='dark'] figure.highlight pre .tag .attr {
+  color: #d2a8ff;
 }
 
 /* 引用块改成 GitHub 式的纯竖线，去掉圆角和彩色底。 */
@@ -327,28 +459,6 @@ html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
 [data-theme='dark'] #page-header,
 [data-theme='dark'] #footer {
   background-color: #1e1e1e;
-}
-
-/* 正文链接改成素灰，悬停略深。 */
-#article-container a,
-#post .post-copyright .post-copyright-info a {
-  color: #6f6f6f;
-  text-decoration-color: rgba(111, 111, 111, 0.45);
-}
-
-#article-container a:hover,
-#post .post-copyright .post-copyright-info a:hover {
-  color: #2b2b2b;
-}
-
-[data-theme='dark'] #article-container a,
-[data-theme='dark'] #post .post-copyright .post-copyright-info a {
-  color: #b6b6b6;
-}
-
-[data-theme='dark'] #article-container a:hover,
-[data-theme='dark'] #post .post-copyright .post-copyright-info a:hover {
-  color: #f2f2f2;
 }
 
 /* 版权框、标签和框内链接改成跟随正文颜色，不再用浅蓝色。 */
@@ -407,17 +517,17 @@ html.solid-bg[data-theme='dark'] .layout .pagination > *:not(.space) {
   --btn-bg: #454545;
 }
 
-[data-theme='dark'] #page-header.nav-fixed > #nav,
-[data-theme='dark'] #page-header.not-top-img > #nav {
-  background: rgba(28, 28, 28, 0.8);
-}
-
 /* 纯色背景由右下角按钮切换。页眉、页面和页脚共用一个颜色，滤镜遮罩一并去掉。 */
+html.solid-bg body,
 html.solid-bg #web_bg,
 html.solid-bg #page-header,
 html.solid-bg #footer {
-  background-color: var(--solid-bg, #f6f6f6) !important;
+  background-color: var(--solid-bg, #efefef) !important;
   background-image: none !important;
+}
+
+html.solid-bg #page-header {
+  transition: none;
 }
 
 html.solid-bg #web_bg::before,
@@ -481,6 +591,7 @@ html.solid-bg:not([data-theme='dark']) #page-header #post-meta a,
 html.solid-bg:not([data-theme='dark']) #page-header #nav,
 html.solid-bg:not([data-theme='dark']) #page-header #nav a,
 html.solid-bg:not([data-theme='dark']) #page-header #nav span.site-page,
+html.solid-bg:not([data-theme='dark']) #page-header #nav button.site-page,
 html.solid-bg:not([data-theme='dark']) #page-header #blog-info,
 html.solid-bg:not([data-theme='dark']) #page-header #toggle-menu,
 html.solid-bg:not([data-theme='dark']) #footer,
@@ -491,6 +602,7 @@ html.solid-bg:not([data-theme='dark']) #footer a {
 
 html.solid-bg:not([data-theme='dark']) #page-header #nav a:hover,
 html.solid-bg:not([data-theme='dark']) #page-header #nav span.site-page:hover,
+html.solid-bg:not([data-theme='dark']) #page-header #nav button.site-page:hover,
 html.solid-bg:not([data-theme='dark']) #page-header #toggle-menu:hover {
   color: var(--solid-fg, #2c3138);
 }
@@ -531,8 +643,8 @@ html.solid-bg:not([data-theme='dark']) #category,
 html.solid-bg:not([data-theme='dark']) #page,
 html.solid-bg:not([data-theme='dark']) .music-dock,
 html.solid-bg:not([data-theme='dark']) .music-dock-playlist,
-html.solid-bg:not([data-theme='dark']) #recent-posts:not(.series-directory) .recent-post-item,
-html.solid-bg:not([data-theme='dark']) #recent-posts:not(.series-directory) .home-announcement {
+html.solid-bg:not([data-theme='dark']) #recent-posts .recent-post-item,
+html.solid-bg:not([data-theme='dark']) #recent-posts .home-announcement {
   background: #fff;
 }
 
@@ -631,9 +743,7 @@ html.solid-bg[data-theme='dark'] .music-dock-playlist {
 
 #article-container .shuoshuo-item,
 .type-404 .error-content,
-.layout .pagination > *:not(.space),
-#page-header.nav-fixed > #nav,
-#page-header.not-top-img > #nav {
+.layout .pagination > *:not(.space) {
   background: var(--glass-tint);
   border: none;
   border-radius: var(--glass-radius);
@@ -741,31 +851,24 @@ html.solid-bg[data-theme='dark'] .music-dock-playlist {
   backdrop-filter: var(--glass-backdrop, blur(var(--aside-blur)) saturate(var(--aside-saturate)));
 }
 
-/* 彻底裁剪掉圆角矩形外的 backdrop-filter 溢出残影，保证边缘绝对锐利干净 */
-#recent-posts .recent-post-item,
-#recent-posts .home-announcement,
-#aside-content .card-widget,
-#article-container .shuoshuo-item,
-.type-404 .error-content,
-.layout .pagination > *:not(.space) {
+/* 仅在毛玻璃模式裁剪圆角矩形外的 backdrop-filter 溢出残影；纯色模式保留完整投影，避免侧栏卡片阴影被裁掉。 */
+html:not(.solid-bg) #recent-posts .recent-post-item,
+html:not(.solid-bg) #recent-posts .home-announcement,
+html:not(.solid-bg) #aside-content .card-widget,
+html:not(.solid-bg) #article-container .shuoshuo-item,
+html:not(.solid-bg) .type-404 .error-content,
+html:not(.solid-bg) .layout .pagination > *:not(.space) {
   clip-path: inset(0 round var(--glass-radius));
 }
 
-/* 分页省略号在玻璃/图片背景上保持可见。 */
+/* 两种主题共用白底分页按钮和带阴影的白点。 */
 .layout .pagination > .space {
-  color: var(--font-color);
-  font-weight: 700;
-  opacity: .75;
-}
-
-html[data-theme='light'] .layout .pagination > .space {
   position: relative;
   color: transparent;
-  opacity: 1;
   text-shadow: none;
 }
 
-html[data-theme='light'] .layout .pagination > .space::before {
+.layout .pagination > .space::before {
   content: "•••";
   position: absolute;
   inset: 0;
@@ -780,8 +883,8 @@ html[data-theme='light'] .layout .pagination > .space::before {
   text-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 }
 
-/* 分页按钮的字、当前页和悬停状态统一使用中性灰。 */
 html .layout #pagination .pagination > a:not(.space) {
+  background: #fff;
   color: #343434;
 }
 
@@ -796,21 +899,6 @@ html .layout #pagination .pagination > .page-number.current {
   color: #fff;
 }
 
-html[data-theme='dark'] .layout #pagination .pagination > a:not(.space) {
-  color: #e4e4e4;
-}
-
-html[data-theme='dark'] .layout #pagination .pagination > a:not(.space):hover,
-html[data-theme='dark'] .layout #pagination .pagination > a:not(.space):focus-visible {
-  background: #4a4a4a;
-  color: #fff;
-}
-
-html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
-  background: #d1d1d1;
-  color: #1e1e1e;
-}
-
 #recent-posts .recent-post-item:hover,
 #recent-posts .home-announcement:hover,
 #aside-content .card-widget:hover,
@@ -822,14 +910,509 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
     0 6px 14px -4px var(--glass-shadow);
 }
 
-/* 顶部导航栏维持干净的直边毛玻璃，不套用圆角折射滤镜 */
-#page-header.nav-fixed > #nav,
-#page-header.not-top-img > #nav {
-  border-bottom: 1px solid var(--glass-border);
+/* 纯色白天模式：细描边 + 轻投影，让正文和侧栏卡片与底色层次清晰、互不融在一起。 */
+html.solid-bg:not([data-theme='dark']) #recent-posts .recent-post-item,
+html.solid-bg:not([data-theme='dark']) #recent-posts .home-announcement,
+html.solid-bg:not([data-theme='dark']) #aside-content .card-widget,
+html.solid-bg:not([data-theme='dark']) #post,
+html.solid-bg:not([data-theme='dark']) #archive,
+html.solid-bg:not([data-theme='dark']) #tag,
+html.solid-bg:not([data-theme='dark']) #category,
+html.solid-bg:not([data-theme='dark']) #page,
+html.solid-bg:not([data-theme='dark']) #article-container .shuoshuo-item,
+html.solid-bg:not([data-theme='dark']) .type-404 .error-content {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 6px 20px -6px rgba(15, 23, 42, 0.09),
+    0 1px 4px -1px rgba(15, 23, 42, 0.05);
+}
+
+html.solid-bg:not([data-theme='dark']) #recent-posts .recent-post-item:hover,
+html.solid-bg:not([data-theme='dark']) #recent-posts .home-announcement:hover,
+html.solid-bg:not([data-theme='dark']) #aside-content .card-widget:hover,
+html.solid-bg:not([data-theme='dark']) .layout > div:first-child:not(.nc):hover,
+html.solid-bg:not([data-theme='dark']) #article-container .shuoshuo-item:hover,
+html.solid-bg:not([data-theme='dark']) .type-404 .error-content:hover {
+  box-shadow:
+    0 10px 26px -6px rgba(15, 23, 42, 0.13),
+    0 2px 6px -1px rgba(15, 23, 42, 0.07);
+}
+
+/* 纯色模式与黑夜模式下都不再给侧栏单独绘制白色发光高光边，保持与主栏卡片完全一致。 */
+html.solid-bg .liquid-glass::after,
+[data-theme='dark'] #aside-content .card-widget.liquid-glass::after {
+  content: none;
+}
+
+/* 顶栏液态玻璃光学表面层默认隐藏（纯色模式下零开销） */
+#nav > .nav-bar-glass,
+#nav #menus > .nav-glass-canvas,
+#nav #menus > .nav-pill-glass,
+#nav #menus > .nav-hover-lens {
+  display: none;
+  pointer-events: none;
+}
+
+#nav > #blog-info,
+#nav > #menus {
+  position: relative;
+  z-index: 1;
+}
+
+/* 层叠顺序：.nav-glass-canvas / .nav-pill-glass (0) < .nav-hover-lens (1) < 菜单文字与图标 (2) < More 下拉菜单 (12)，
+ * 保证按钮背后的油画与玻璃能实时折射色散，而文字与图标永远锐利不发糊。 */
+#nav #menus > :not(.nav-glass-canvas):not(.nav-pill-glass):not(.nav-hover-lens) {
+  position: relative;
+  z-index: 2;
+}
+
+#nav .menus_items .menus_item .menus_item_child {
+  z-index: 12;
+}
+
+/* 首页顶栏左上角标题：页首隐藏，下滑时承接大标题丝滑飞入。 */
+#nav .nav-home-title {
+  display: inline-block;
+  font-size: 0.96em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--font-color);
+  text-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+html.solid-bg #page-header.full_page.nav-fixed #nav .nav-home-title {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 有背景模式下的苹果风真光学液态玻璃顶栏与交互动效：
+ * 1) 顶部居中胶囊 (.nav-pill-glass)：约 510×46px，0px 模糊 + Snell 折射 + 3 通道 R/G/B 色散；
+ * 2) 悬停滑动液态玻璃透镜 (.nav-hover-lens)：类似 iOS 26 水滴按钮，弹簧平滑跟随选项滑动，
+ *    并随滑动速度实时增强/舒缓 3 通道 R/G/B 光学色散；
+ * 3) 下滑平滑过渡 (.nav-morph-ready)：#menus 以纯 GPU transform 从居中丝滑过渡到右侧，
+ *    首页大标题（#site-title）同步平滑缩放飞入左上角并无缝交接给 .nav-home-title；
+ * 4) 滚动全宽栏 (.nav-bar-glass)：1×60px 1D 底边折射条纹 + 2px 轻模糊。 */
+
+/* ===== 连续滚动过渡模式（桌面端有背景图模式） ===== */
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 91;
+  width: 100%;
+  height: 60px;
+  padding: 0 14px 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
   border-radius: 0;
-  box-shadow: 0 8px 24px -12px var(--glass-shadow);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: auto;
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav #blog-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 36px;
+  min-width: 0;
+  padding-right: 16px;
+  overflow: hidden;
+}
+
+/* 内页（如文章页）左侧返回+标题在导航停靠后再平滑淡入 */
+html:not(.solid-bg) #page-header.nav-morph-ready:not(.full_page) > #nav:not(.nav-docked) #blog-info {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s ease;
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready:not(.full_page) > #nav.nav-docked #blog-info {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.24s ease;
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav #menus {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 23px;
+  pointer-events: auto;
+  will-change: transform;
+  box-shadow:
+    0 10px 26px -6px rgba(0, 0, 0, calc(0.20 * var(--nav-pill-opacity, 1))),
+    0 2px 8px -2px rgba(0, 0, 0, calc(0.08 * var(--nav-pill-opacity, 1)));
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-pill-hidden) #menus.has-webgl-glass > .nav-glass-canvas,
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus.has-webgl-glass > .nav-glass-canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* WebGL 液态玻璃就绪后隐藏 CSS/SVG 胶囊回退层，避免双层叠边与重复模糊 */
+html:not(.solid-bg) #page-header > #nav #menus.has-webgl-glass > .nav-pill-glass {
+  display: none !important;
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-pill-hidden) #menus > .nav-pill-glass {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round 23px);
+  --glass-blur: 0px;
+  --glass-saturate: 155%;
+  --glass-refract-thickness: 18;
+  --glass-refract-ior: 1.55;
+  --glass-refract-scale: 36;
+  --glass-chroma-strength: 1.3;
+  --glass-spec-strength: 0.72;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.01) 52%, rgba(255, 255, 255, 0.06) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(1px) saturate(155%));
+  backdrop-filter: var(--glass-backdrop, blur(1px) saturate(155%));
+}
+
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav:not(.nav-pill-hidden) #menus > .nav-pill-glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(10, 12, 16, 0.10) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.12);
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav.nav-bar-active > .nav-bar-glass {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  --glass-blur: 2px;
+  --glass-saturate: 170%;
+  --glass-refract-thickness: 16;
+  --glass-refract-ior: 1.55;
+  --glass-refract-scale: 24;
+  --glass-chroma-strength: 0.9;
+  --glass-spec-strength: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.20) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.38),
+    0 8px 24px -10px rgba(15, 23, 42, 0.12);
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(4px) saturate(170%));
+  backdrop-filter: var(--glass-backdrop, blur(4px) saturate(170%));
+}
+
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-bar-active > .nav-bar-glass {
+  background: linear-gradient(180deg, rgba(22, 24, 30, 0.34) 0%, rgba(12, 14, 18, 0.20) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.12),
+    0 10px 28px -10px rgba(0, 0, 0, 0.38);
+}
+
+/* 顶部未停靠时文字为纯白高对比；停靠到全宽玻璃栏后平滑切换为日/夜主题色 */
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-docked) #menus a,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-docked) #menus span.site-page,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-docked) #menus button.site-page,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav:not(.nav-docked) #menus #toggle-menu {
+  color: rgba(255, 255, 255, 0.98);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42), 0 0 1px rgba(0, 0, 0, 0.25);
+  transition: color 0.24s ease, text-shadow 0.24s ease;
+}
+
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav.nav-docked #menus a,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav.nav-docked #menus span.site-page,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav.nav-docked #menus button.site-page,
+html:not(.solid-bg) #page-header.nav-morph-ready > #nav.nav-docked #menus #toggle-menu {
+  color: var(--font-color);
+  text-shadow: none;
+  transition: color 0.24s ease, text-shadow 0.24s ease;
+}
+
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-docked #menus a,
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-docked #menus span.site-page,
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-docked #menus button.site-page,
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-docked #menus #toggle-menu,
+html:not(.solid-bg)[data-theme='dark'] #page-header.nav-morph-ready > #nav.nav-docked .nav-home-title {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* 首页大标题平滑飞入左上角时的层级与锚点设置 */
+html:not(.solid-bg) #page-header.full_page.nav-morph-ready #site-info {
+  z-index: 95;
+  text-align: center;
+  pointer-events: none;
+}
+
+html:not(.solid-bg) #page-header.full_page.nav-morph-ready #site-title {
+  display: inline-block;
+  transform-origin: left center;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+html:not(.solid-bg) #page-header.full_page.nav-morph-ready #site-subtitle {
+  will-change: transform, opacity;
+}
+
+/* 桌面端有背景模式下用液态玻璃水滴透镜替代原有平直下划线 */
+html:not(.solid-bg) #nav:not(.hide-menu) #menus .site-page:not(.child)::after {
+  display: none;
+}
+
+/* ===== 悬停滑动液态玻璃按钮（位于文字下层 z-index: 1，文字永远 100% 锐利不糊，玻璃层 0px 模糊全透明折射） ===== */
+html:not(.solid-bg) #nav:not(.hide-menu) #menus > .nav-hover-lens {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  z-index: 1;
+  height: 36px;
+  border-radius: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center center;
+  will-change: transform, width, opacity;
+  transition: opacity 0.18s ease;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 255, 255, 0.04) 36%,
+      rgba(255, 255, 255, 0.00) 68%,
+      rgba(255, 255, 255, 0.09) 100%
+    ),
+    radial-gradient(
+      65% 55% at var(--lens-glint-x, 50%) 0%,
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(255, 255, 255, 0.00) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.24),
+    0 4px 14px -3px rgba(0, 0, 0, 0.32),
+    0 1px 2px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: var(--glass-backdrop, saturate(155%) contrast(1.06));
+  backdrop-filter: var(--glass-backdrop, saturate(155%) contrast(1.06));
+}
+
+html:not(.solid-bg) #nav:not(.hide-menu) #menus > .nav-hover-lens.is-visible {
+  opacity: 1;
+}
+
+html:not(.solid-bg) #nav.nav-docked:not(.hide-menu) #menus > .nav-hover-lens {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.38) 0%,
+      rgba(255, 255, 255, 0.06) 38%,
+      rgba(255, 255, 255, 0.00) 72%,
+      rgba(255, 255, 255, 0.14) 100%
+    ),
+    radial-gradient(
+      65% 55% at var(--lens-glint-x, 50%) 0%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.00) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.90),
+    inset 0 -1px 0.5px rgba(15, 23, 42, 0.08),
+    0 3px 10px -3px rgba(15, 23, 42, 0.16),
+    0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+html:not(.solid-bg)[data-theme='dark'] #nav.nav-docked:not(.hide-menu) #menus > .nav-hover-lens {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.02) 38%,
+      rgba(255, 255, 255, 0.00) 72%,
+      rgba(255, 255, 255, 0.07) 100%
+    ),
+    radial-gradient(
+      65% 55% at var(--lens-glint-x, 50%) 0%,
+      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.00) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.14),
+    0 4px 12px -3px rgba(0, 0, 0, 0.44);
+}
+
+/* 静态回退状态（移动端 / 减弱动态效果 / 首屏 JS 初始化前） */
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav {
+  top: 14px;
+  height: auto;
+  padding: 0 16px;
+  justify-content: center;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #blog-info {
+  display: none;
+}
+
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 23px;
+  pointer-events: auto;
+  box-shadow:
+    0 12px 32px -10px rgba(0, 0, 0, 0.30),
+    0 2px 10px -2px rgba(0, 0, 0, 0.16);
+}
+
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus > .nav-pill-glass {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round 23px);
+  --glass-blur: 0px;
+  --glass-saturate: 155%;
+  --glass-refract-thickness: 18;
+  --glass-refract-ior: 1.55;
+  --glass-refract-scale: 36;
+  --glass-chroma-strength: 1.3;
+  --glass-spec-strength: 1.0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(255, 255, 255, 0.06) 100%);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.68),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(2px) saturate(160%));
+  backdrop-filter: var(--glass-backdrop, blur(2px) saturate(160%));
+}
+
+html:not(.solid-bg)[data-theme='dark'] #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus > .nav-pill-glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(10, 12, 16, 0.12) 100%);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.18);
+}
+
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus a,
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus span.site-page,
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus button.site-page,
+html:not(.solid-bg) #page-header:not(.nav-morph-ready):not(.nav-fixed):not(.not-top-img) > #nav #menus #toggle-menu {
+  color: rgba(255, 255, 255, 0.98);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42), 0 0 1px rgba(0, 0, 0, 0.25);
+}
+
+/* 外圈高光描边始终保持柔和纯粹白色（绝不染色、不生硬像泡泡线） */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  html:not(.solid-bg) .nav-pill-glass.liquid-glass:not([data-shader-glass="1"])::after {
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.68) 0%,
+      rgba(255, 255, 255, 0.20) 28%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.18) 72%,
+      rgba(255, 255, 255, 0.52) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  html:not(.solid-bg) #page-header:not(.nav-fixed):not(.not-top-img) > #nav {
+    top: 12px;
+  }
+
+  html:not(.solid-bg) #page-header:not(.nav-fixed):not(.not-top-img) > #nav #menus {
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 22px;
+  }
+
+  html:not(.solid-bg) #page-header:not(.nav-fixed):not(.not-top-img) > #nav #menus > .nav-pill-glass {
+    clip-path: inset(0 round 22px);
+  }
+}
+
+/* 状态二回退（移动端 / not-top-img / 减弱动态效果）：全宽液态玻璃吸顶导航 */
+html:not(.solid-bg) #page-header:not(.nav-morph-ready).nav-fixed > #nav,
+html:not(.solid-bg) #page-header.not-top-img > #nav {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html:not(.solid-bg) #page-header:not(.nav-morph-ready).nav-fixed > #nav > .nav-bar-glass,
+html:not(.solid-bg) #page-header.not-top-img > #nav > .nav-bar-glass {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  --glass-blur: 2px;
+  --glass-saturate: 170%;
+  --glass-refract-thickness: 16;
+  --glass-refract-ior: 1.55;
+  --glass-refract-scale: 24;
+  --glass-chroma-strength: 0.9;
+  --glass-spec-strength: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 255, 255, 0.20) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.38),
+    0 8px 24px -10px rgba(15, 23, 42, 0.12);
+  -webkit-backdrop-filter: var(--glass-backdrop, blur(4px) saturate(170%));
+  backdrop-filter: var(--glass-backdrop, blur(4px) saturate(170%));
+}
+
+html:not(.solid-bg)[data-theme='dark'] #page-header:not(.nav-morph-ready).nav-fixed > #nav > .nav-bar-glass,
+html:not(.solid-bg)[data-theme='dark'] #page-header.not-top-img > #nav > .nav-bar-glass {
+  background: linear-gradient(180deg, rgba(22, 24, 30, 0.34) 0%, rgba(12, 14, 18, 0.20) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.12),
+    0 10px 28px -10px rgba(0, 0, 0, 0.38);
+}
+
+.nav-bar-glass.liquid-glass::after {
+  content: none;
 }
 
 /* 静态对角与唇边高光通过 JS 按 shader 公式绘制到 ::after，不截获点击。 */
@@ -878,13 +1461,19 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .liquid-glass {
+  .liquid-glass,
+  html:not(.solid-bg) #page-header:not(.nav-fixed):not(.not-top-img) > #nav #menus > .nav-pill-glass,
+  html:not(.solid-bg) #page-header.nav-fixed > #nav > .nav-bar-glass,
+  html:not(.solid-bg) #page-header.not-top-img > #nav > .nav-bar-glass {
     background: var(--glass-solid) !important;
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .liquid-glass {
+  .liquid-glass,
+  html:not(.solid-bg) #page-header:not(.nav-fixed):not(.not-top-img) > #nav #menus > .nav-pill-glass,
+  html:not(.solid-bg) #page-header.nav-fixed > #nav > .nav-bar-glass,
+  html:not(.solid-bg) #page-header.not-top-img > #nav > .nav-bar-glass {
     background: var(--glass-solid) !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
@@ -1064,7 +1653,249 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   color: var(--font-color);
 }
 
-/* 音乐页：歌单和播放器共用博客的浅蓝色。 */
+/* 音乐页：多歌单封面网格 + 当前歌单播放器。 */
+.music-playlists-section[hidden],
+.music-detail-section[hidden] {
+  display: none !important;
+}
+
+.music-playlists-section {
+  margin-bottom: 0;
+}
+
+.music-playlists-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.music-playlists-count {
+  color: var(--font-color);
+  opacity: 0.56;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.music-playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 1.25rem 1rem;
+}
+
+.music-playlist-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.music-playlist-cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(128, 128, 128, 0.16);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.28);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.music-playlist-card:hover .music-playlist-cover-wrap,
+.music-playlist-card:focus-visible .music-playlist-cover-wrap {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -10px rgba(0, 0, 0, 0.36);
+}
+
+.music-playlist-card.is-selected .music-playlist-cover-wrap {
+  box-shadow:
+    0 0 0 2px var(--font-color),
+    0 10px 24px -10px rgba(0, 0, 0, 0.34);
+}
+
+.music-playlist-cover-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--font-color);
+  opacity: 0.35;
+  font-size: 2.6rem;
+}
+
+.music-playlist-cover-wrap img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  object-fit: cover;
+  transition: transform 0.32s ease, filter 0.24s ease;
+}
+
+.music-playlist-card:hover .music-playlist-cover-wrap img,
+.music-playlist-card:focus-visible .music-playlist-cover-wrap img,
+.music-playlist-card.is-playing .music-playlist-cover-wrap img {
+  transform: scale(1.04);
+  filter: brightness(0.76);
+}
+
+.music-playlist-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1c1f24;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.88);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.music-playlist-play svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.music-playlist-card:hover .music-playlist-play,
+.music-playlist-card:focus-visible .music-playlist-play,
+.music-playlist-card.is-playing .music-playlist-play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.music-playlist-play:hover {
+  background: #fff;
+  transform: translate(-50%, -50%) scale(1.07);
+}
+
+.music-playlist-card-name {
+  margin-top: 0.62rem;
+  color: var(--font-color);
+  font-size: 0.94rem;
+  font-weight: 550;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.music-playlist-card-meta {
+  margin-top: 0.2rem;
+  color: var(--font-color);
+  opacity: 0.56;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.music-detail-section {
+  padding-top: 0;
+  border-top: none;
+}
+
+.music-detail-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+[data-theme='dark'] .music-detail-topbar {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.music-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.36rem 0.78rem;
+  border: 1px solid rgba(128, 128, 128, 0.22);
+  border-radius: 999px;
+  background: rgba(128, 128, 128, 0.08);
+  color: var(--font-color);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.music-back-btn:hover {
+  background: rgba(128, 128, 128, 0.16);
+  border-color: rgba(128, 128, 128, 0.38);
+}
+
+[data-theme='dark'] .music-back-btn {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+[data-theme='dark'] .music-back-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.music-detail-hero {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.music-detail-cover {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(128, 128, 128, 0.16);
+  color: var(--font-color);
+  font-size: 2rem;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.30);
+}
+
+.music-detail-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  object-fit: cover;
+}
+
+.music-detail-cover img[hidden] {
+  display: none !important;
+}
+
+.music-library-meta {
+  margin: 0.25rem 0 0 !important;
+  color: var(--font-color);
+  opacity: 0.58;
+  font-size: 0.84rem;
+  font-variant-numeric: tabular-nums;
+}
+
 #article-container .music-library-heading {
   display: flex;
   align-items: end;
@@ -1351,6 +2182,54 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   opacity: 0.72;
 }
 
+.music-dock-playlist-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 140px;
+  padding: 4px 9px;
+  border: 1px solid rgba(128, 128, 128, 0.24) !important;
+  border-radius: 999px;
+  background: rgba(128, 128, 128, 0.09) !important;
+  color: inherit;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.music-dock-playlist-pill:hover,
+.music-dock.is-playlist-open .music-dock-playlist-pill {
+  background: rgba(128, 128, 128, 0.18) !important;
+  border-color: rgba(128, 128, 128, 0.42) !important;
+}
+
+[data-theme="dark"] .music-dock-playlist-pill {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .music-dock-playlist-pill:hover,
+[data-theme="dark"] .music-dock.is-playlist-open .music-dock-playlist-pill {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.music-dock-playlist-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-dock-caret {
+  opacity: 0.65;
+  font-size: 0.72rem;
+  transition: transform 0.2s ease;
+}
+
+.music-dock.is-playlist-open .music-dock-caret {
+  transform: rotate(180deg);
+}
+
 .music-dock-collapse {
   align-self: flex-start;
   font-size: 1.2rem;
@@ -1464,6 +2343,94 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   background: rgba(36, 36, 36, 0.96);
 }
 
+.music-dock-playlists {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.16);
+  scrollbar-width: thin;
+}
+
+.music-dock-playlists[hidden] {
+  display: none !important;
+}
+
+[data-theme="dark"] .music-dock-playlists {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.music-dock-playlist .music-dock-pl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  width: auto;
+  max-width: 180px;
+  padding: 4px 9px 4px 5px;
+  border: 1px solid rgba(128, 128, 128, 0.18);
+  border-radius: 999px;
+  background: rgba(128, 128, 128, 0.06);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.music-dock-playlist .music-dock-pl-chip:hover {
+  background: rgba(128, 128, 128, 0.14);
+}
+
+.music-dock-playlist .music-dock-pl-chip.is-active {
+  border-color: rgba(128, 128, 128, 0.45);
+  background: rgba(128, 128, 128, 0.20);
+  color: var(--text-highlight-color);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .music-dock-playlist .music-dock-pl-chip {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .music-dock-playlist .music-dock-pl-chip.is-active {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.music-dock-pl-thumb {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: rgba(128, 128, 128, 0.18);
+  font-size: 0.65rem;
+}
+
+.music-dock-pl-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-dock-pl-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 1 !important;
+}
+
+.music-dock-pl-count {
+  font-size: 0.72rem;
+  opacity: 0.58;
+  font-variant-numeric: tabular-nums;
+}
+
 .music-dock-playlist ol {
   margin: 0;
   padding: 0;
@@ -1491,15 +2458,14 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   flex: 1;
   overflow: hidden;
   font-weight: 650;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .music-dock-playlist button small {
+  min-width: 0;
   max-width: 42%;
   overflow: hidden;
   opacity: 0.65;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -1628,22 +2594,22 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
 }
 
 .music-tracks li {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.8rem 0.6rem;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  padding: 0.7rem 0.6rem;
+  border-radius: 8px;
+  transition: background-color 0.18s ease;
+}
+
+.music-tracks li:hover,
+.music-tracks li:focus-within {
+  background: rgba(128, 128, 128, 0.12);
 }
 
 .music-tracks li.is-current {
-  border-radius: 8px;
   background: rgba(128, 128, 128, 0.16);
-}
-
-.music-track-number {
-  color: inherit;
-  opacity: 0.6;
-  font-variant-numeric: tabular-nums;
 }
 
 .music-track-info {
@@ -1656,14 +2622,89 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
 .music-track-info span,
 .music-track-info small {
   display: block;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 .music-track-info small {
   opacity: 0.75;
 }
 
+/* 一行显示；只有鼠标悬停在该行、且文字确实溢出时，才单向从左滚到右。 */
+.music-track-text {
+  display: inline-block;
+  width: max-content;
+  max-width: none;
+  will-change: transform;
+}
+
+.music-tracks li:hover .is-scrolling > .music-track-text,
+.music-tracks li:focus-within .is-scrolling > .music-track-text {
+  animation: music-track-marquee var(--music-marquee-duration, 8s) linear infinite;
+}
+
+.music-dock-playlist button:hover .is-scrolling > .music-track-text {
+  animation: music-track-marquee var(--music-marquee-duration, 8s) linear infinite;
+}
+
+@keyframes music-track-marquee {
+  0%, 5% {
+    transform: translateX(0);
+  }
+  95%, 100% {
+    transform: translateX(var(--music-marquee-shift, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-tracks li:hover .is-scrolling > .music-track-text,
+  .music-dock-playlist button:hover .is-scrolling > .music-track-text {
+    animation: none;
+  }
+}
+
+/* 悬停时浮出的完整曲目信息，固定定位避免被容器裁掉。 */
+.music-track-tip {
+  position: fixed;
+  z-index: 60;
+  max-width: min(22rem, 80vw);
+  padding: 0.45rem 0.62rem;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 10px;
+  background: rgba(128, 128, 128, 0.2);
+  color: var(--font-color);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  box-shadow: 0 10px 26px rgba(64, 64, 64, 0.16);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.music-track-tip.is-open {
+  opacity: 1;
+}
+
+.music-track-tip strong {
+  display: block;
+  font-weight: 650;
+}
+
+.music-track-tip small {
+  display: block;
+  opacity: 0.72;
+}
+
 @media (max-width: 600px) {
+  .music-playlist-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 0.75rem;
+  }
+  .music-dock-playlist-pill {
+    max-width: 108px;
+  }
   #article-container .music-library-heading {
     align-items: start;
     flex-direction: column;
@@ -1747,19 +2788,31 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   color: var(--font-color);
 }
 
+/* GitHub Alerts（> [!NOTE/TIP/IMPORTANT/WARNING/CAUTION]）：与普通引用块保持一致的方角纯竖线与中性浅底，仅在竖线和标题保留克制的语义色。 */
 #article-container .markdown-alert {
-  margin: 1rem 0;
-  padding: 0.9rem 1rem 0.8rem;
-  border-left: 0.25rem solid var(--theme-color);
-  border-radius: 0.45rem;
-  background: var(--card-bg);
+  margin: 0 0 20px;
+  padding: 10px 15px;
+  border-left: 4px solid rgba(0, 0, 0, 0.18);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--font-color);
+}
+
+[data-theme='dark'] #article-container .markdown-alert {
+  border-left-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 #article-container .markdown-alert > p {
   margin: 0.35rem 0;
 }
 
-#article-container .markdown-alert > p:last-child {
+#article-container .markdown-alert > p:empty {
+  display: none;
+}
+
+#article-container .markdown-alert > :last-child {
   margin-bottom: 0;
 }
 
@@ -1767,8 +2820,8 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin: 0.1rem 0 0.5rem;
-  line-height: 1.25;
+  margin: 0 0 0.45rem;
+  line-height: 1.35;
   font-weight: 700;
 }
 
@@ -1776,8 +2829,7 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
   width: 1em;
   height: 1em;
   flex: 0 0 auto;
-  margin-top: 1px;
-  color: #111;
+  color: currentColor;
 }
 
 #article-container .markdown-alert .markdown-alert-title svg path {
@@ -1789,72 +2841,83 @@ html[data-theme='dark'] .layout #pagination .pagination > .page-number.current {
 }
 
 #article-container .markdown-alert-note {
-  border-left-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.08);
+  border-left-color: #0969da;
 }
 
 #article-container .markdown-alert-note .markdown-alert-title {
-  color: #2563eb;
+  color: #0969da;
 }
 
 #article-container .markdown-alert-tip {
-  border-left-color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
+  border-left-color: #1a7f37;
 }
 
 #article-container .markdown-alert-tip .markdown-alert-title {
-  color: #059669;
+  color: #1a7f37;
 }
 
 #article-container .markdown-alert-important {
-  border-left-color: #8b5cf6;
-  background: rgba(139, 92, 246, 0.1);
+  border-left-color: #8250df;
 }
 
 #article-container .markdown-alert-important .markdown-alert-title {
-  color: #7c3aed;
+  color: #8250df;
 }
 
 #article-container .markdown-alert-warning {
-  border-left-color: #f59e0b;
-  background: rgba(245, 158, 11, 0.1);
+  border-left-color: #9a6700;
 }
 
 #article-container .markdown-alert-warning .markdown-alert-title {
-  color: #d97706;
+  color: #9a6700;
 }
 
 #article-container .markdown-alert-caution {
-  border-left-color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+  border-left-color: #cf222e;
 }
 
 #article-container .markdown-alert-caution .markdown-alert-title {
-  color: #dc2626;
+  color: #cf222e;
 }
 
 [data-theme='dark'] #article-container .markdown-alert-note {
-  background: rgba(59, 130, 246, 0.16);
+  border-left-color: #4493f8;
+}
+
+[data-theme='dark'] #article-container .markdown-alert-note .markdown-alert-title {
+  color: #4493f8;
 }
 
 [data-theme='dark'] #article-container .markdown-alert-tip {
-  background: rgba(16, 185, 129, 0.16);
+  border-left-color: #3fb950;
+}
+
+[data-theme='dark'] #article-container .markdown-alert-tip .markdown-alert-title {
+  color: #3fb950;
 }
 
 [data-theme='dark'] #article-container .markdown-alert-important {
-  background: rgba(139, 92, 246, 0.18);
+  border-left-color: #ab7df8;
+}
+
+[data-theme='dark'] #article-container .markdown-alert-important .markdown-alert-title {
+  color: #ab7df8;
 }
 
 [data-theme='dark'] #article-container .markdown-alert-warning {
-  background: rgba(245, 158, 11, 0.18);
+  border-left-color: #d29922;
+}
+
+[data-theme='dark'] #article-container .markdown-alert-warning .markdown-alert-title {
+  color: #d29922;
 }
 
 [data-theme='dark'] #article-container .markdown-alert-caution {
-  background: rgba(239, 68, 68, 0.18);
+  border-left-color: #f85149;
 }
 
-[data-theme='dark'] #article-container .markdown-alert .markdown-alert-title svg {
-  color: #fff;
+[data-theme='dark'] #article-container .markdown-alert-caution .markdown-alert-title {
+  color: #f85149;
 }
 
 [data-theme='dark'] #article-container .markdown-alert .markdown-alert-title img {

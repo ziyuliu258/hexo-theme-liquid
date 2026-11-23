@@ -36,14 +36,23 @@ post:
 
 search:
   title: 搜索
-  load_data: 数据加载中
-  input_placeholder: 搜索文章
+  load_data: 正在加载搜索索引…
+  input_placeholder: 搜索文章、标签、分类…
+  clear: 清空搜索
+  close: 关闭搜索
+  hint_navigate: 选择
+  hint_open: 打开
+  hint_close: 关闭
   algolia_search:
     hits_empty: '未找到符合您查询的内容：${query}'
     hits_stats: '找到 ${hits} 条结果，耗时 ${time} 毫秒'
   local_search:
-    hits_empty: '未找到符合您查询的内容：${query}'
+    hits_empty: '未找到与「${query}」相关的内容'
     hits_stats: '共找到 ${hits} 篇文章'
+    indexed_stats: '共收录 ${total} 篇文章'
+    load_error: '搜索索引加载失败'
+    retry: '重试'
+    show_more: '展开其余 ${remaining} 篇结果'
 
 pagination:
   prev: 上一篇

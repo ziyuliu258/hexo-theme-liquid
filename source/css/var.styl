@@ -1,17 +1,14 @@
 // color
-$bright-blue = #49B1F5
-$strong-cyan = #00c4b6
 $light-orange = #FF7242
 $light-red = #F47466
 $themeColorEnable = hexo-config('theme_color') && hexo-config('theme_color.enable')
-$theme-color = $themeColorEnable && hexo-config('theme_color.main') ? convert(hexo-config('theme_color.main')) : $bright-blue
-$theme-paginator-color = $themeColorEnable && hexo-config('theme_color.paginator') ? convert(hexo-config('theme_color.paginator')) : $strong-cyan
-$theme-text-selection-color = $themeColorEnable && hexo-config('theme_color.text_selection') ? convert(hexo-config('theme_color.text_selection')) : $strong-cyan
-$theme-link-color = $themeColorEnable && hexo-config('theme_color.link_color') ? convert(hexo-config('theme_color.link_color')) : $bright-blue
-$theme-hr-color = $themeColorEnable && hexo-config('theme_color.hr_color') ? convert(hexo-config('theme_color.hr_color')) : $bright-blue
+$theme-color = $themeColorEnable && hexo-config('theme_color.main') ? convert(hexo-config('theme_color.main')) : #555
+$theme-paginator-color = $themeColorEnable && hexo-config('theme_color.paginator') ? convert(hexo-config('theme_color.paginator')) : $theme-color
+$theme-text-selection-color = $themeColorEnable && hexo-config('theme_color.text_selection') ? convert(hexo-config('theme_color.text_selection')) : $theme-color
+$theme-hr-color = $themeColorEnable && hexo-config('theme_color.hr_color') ? convert(hexo-config('theme_color.hr_color')) : $theme-color
 $code-foreground = $themeColorEnable && hexo-config('theme_color.code_foreground') ? convert(hexo-config('theme_color.code_foreground')) : $light-red
 $code-background = $themeColorEnable && hexo-config('theme_color.code_background') ? convert(hexo-config('theme_color.code_background')) : rgba(27, 31, 35, .05)
-$theme-toc-color = $themeColorEnable && hexo-config('theme_color.toc_color') ? convert(hexo-config('theme_color.toc_color')) : $strong-cyan
+$theme-toc-color = $themeColorEnable && hexo-config('theme_color.toc_color') ? convert(hexo-config('theme_color.toc_color')) : $theme-color
 // font
 
 $chinseFont = $language == 'zh-CN' ? 'Microsoft YaHei' : 'Microsoft JhengHei'
@@ -47,16 +44,15 @@ $whitesmoke = #f5f5f5
 $font-black = #4C4948
 $card-bg = $white
 $text-highlight-color = $font-color
-$text-hover = $theme-color
+$text-hover = var(--theme-accent)
 $text-bg-hover = $theme-color
 // code
 $line-height-code-block = 1.6
 $blockquote-color = #6a737d
-$blockquote-padding-color = $themeColorEnable && hexo-config('theme_color.blockquote_padding_color') ? convert(hexo-config('theme_color.blockquote_padding_color')) : #49B1F5
+$blockquote-padding-color = $themeColorEnable && hexo-config('theme_color.blockquote_padding_color') ? convert(hexo-config('theme_color.blockquote_padding_color')) : $theme-color
 $blockquote-background-color = $themeColorEnable && hexo-config('theme_color.blockquote_background_color') ? alpha(convert(hexo-config('theme_color.blockquote_background_color')), .1) : alpha($blockquote-padding-color, .1)
 // page
 $body-bg = #fff
-$a-link-color = #99a9bf
 $sticky-color = $light-orange
 $theme-meta-color = $themeColorEnable && hexo-config('theme_color.meta_color') ? convert(hexo-config('theme_color.meta_color')) : #858585
 // sidebar
@@ -69,7 +65,7 @@ $toc-mobile-maxWidth = 380px
 $toc-active-color = #fff
 // Button
 $button-color = #fff
-$button-hover-color = $themeColorEnable && hexo-config('theme_color.button_hover') ? convert(hexo-config('theme_color.button_hover')) : $light-orange
+$button-hover-color = $themeColorEnable && hexo-config('theme_color.button_hover') ? convert(hexo-config('theme_color.button_hover')) : $theme-color
 $button-bg = $theme-color
 $pseudo-hover = $button-hover-color
 // scrollbar
@@ -86,7 +82,7 @@ $search-color = $theme-color
 $search-keyword-highlight = #F47466
 $search-a-color = $font-black
 // comments
-$comments-switch-first-text = $bright-blue
+$comments-switch-first-text = $theme-color
 $comments-switch-second-text = $light-orange
 $comments-switch-round = #fff
 $comments-switch-bg = #f6f8fa

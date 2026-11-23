@@ -1,2 +1,6 @@
-.tag-cloud-list.text-center
-  !=cloudTags({source: site.tags, orderby: page.orderby || 'random', order: page.order || 1, minfontsize: 1.2, maxfontsize: 1.5, limit: 0, unit: 'em'})
+- const sortedTags = site.tags.sort(page.orderby || 'length', page.order !== undefined ? page.order : -1)
+.tag-cloud-list
+  each tag in sortedTags.toArray()
+    a.tag-chip(href=url_for(tag.path))
+      span.tag-chip-name= tag.name
+      span.tag-chip-count= tag.length

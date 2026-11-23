@@ -1,28 +1,43 @@
 #article-container.container
   section#music-library.music-library
-    .music-library-heading
-      div
-        h2(data-music-title)= _p('liquid.music.title')
-      a(data-music-playlist-link target="_blank" rel="noopener noreferrer")= _p('liquid.music.open_playlist')
-    .music-player-panel
-      .music-now-playing
-        .music-cover(aria-hidden="true")
-          span ♫
-        div
-          small= _p('liquid.music.now_playing')
-          h3(data-music-track)= _p('liquid.music.select_track')
-          p(data-music-artist)
-      .music-page-controls
-        .music-page-buttons
-          button(type="button" data-music-action="previous" aria-label=_p('liquid.music.previous')) ⏮
-          button(type="button" data-music-action="toggle" aria-label=_p('liquid.music.play')) ▶
-          button(type="button" data-music-action="next" aria-label=_p('liquid.music.next')) ⏭
-        span(data-music-elapsed) 0:00
-        input(data-music-seek type="range" min="0" max="1000" value="0" aria-label=_p('liquid.music.seek'))
-        span(data-music-duration) 0:00
-        label.music-page-volume= _p('liquid.music.volume')
-          input(data-music-volume type="range" min="0" max="1" step="0.01" value="1" aria-label=_p('liquid.music.volume'))
-      .music-lyrics(data-music-lyrics hidden)
-        .music-lyrics-view(data-music-lyrics-view tabindex="0" aria-label=_p('liquid.music.lyrics'))
-      p.music-status(data-music-status role="status")
-    ol.music-tracks(data-music-tracks)
+    section.music-playlists-section(data-music-grid-view)
+      .music-playlists-header
+        h2= _p('liquid.music.playlist')
+        span.music-playlists-count(data-music-playlist-count)
+      .music-playlist-grid(data-music-playlist-grid)
+    section.music-detail-section(data-music-detail-view hidden)
+      .music-detail-topbar
+        button.music-back-btn(type="button" data-music-back)
+          span(aria-hidden="true") ←
+          span 返回歌单
+        a(data-music-playlist-link target="_blank" rel="noopener noreferrer")= _p('liquid.music.open_playlist')
+      .music-library-heading
+        .music-detail-hero
+          .music-detail-cover(aria-hidden="true")
+            span ♫
+            img(data-music-playlist-cover alt="" referrerpolicy="no-referrer" hidden)
+          div
+            h2(data-music-title)= _p('liquid.music.title')
+            p.music-library-meta(data-music-meta)
+      .music-player-panel
+        .music-now-playing
+          .music-cover(aria-hidden="true")
+            span ♫
+          div
+            small= _p('liquid.music.now_playing')
+            h3(data-music-track)= _p('liquid.music.select_track')
+            p(data-music-artist)
+        .music-page-controls
+          .music-page-buttons
+            button(type="button" data-music-action="previous" aria-label=_p('liquid.music.previous')) ⏮
+            button(type="button" data-music-action="toggle" aria-label=_p('liquid.music.play')) ▶
+            button(type="button" data-music-action="next" aria-label=_p('liquid.music.next')) ⏭
+          span(data-music-elapsed) 0:00
+          input(data-music-seek type="range" min="0" max="1000" value="0" aria-label=_p('liquid.music.seek'))
+          span(data-music-duration) 0:00
+          label.music-page-volume= _p('liquid.music.volume')
+            input(data-music-volume type="range" min="0" max="1" step="0.01" value="1" aria-label=_p('liquid.music.volume'))
+        .music-lyrics(data-music-lyrics hidden)
+          .music-lyrics-view(data-music-lyrics-view tabindex="0" aria-label=_p('liquid.music.lyrics'))
+        p.music-status(data-music-status role="status")
+      ol.music-tracks(data-music-tracks)

@@ -24,7 +24,10 @@ script.
       }
     }
   }
-  btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    window.typed?.destroy()
+    window.typed = null
+  }, 'typedDestroy')
 
 case source
   when 1

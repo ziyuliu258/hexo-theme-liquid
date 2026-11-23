@@ -35,14 +35,23 @@ post:
 
 search:
   title: 搜尋
-  load_data: 正在加載數據庫
-  input_placeholder: 搜尋文章
+  load_data: 正在載入搜尋索引…
+  input_placeholder: 搜尋文章、標籤、分類…
+  clear: 清除搜尋
+  close: 關閉搜尋
+  hint_navigate: 選擇
+  hint_open: 開啟
+  hint_close: 關閉
   algolia_search:
     hits_empty: '未找到相關內容：${query}'
     hits_stats: '找到 ${hits} 條結果，耗時 ${time} 毫秒'
   local_search:
-    hits_empty: '未找到相關內容：${query}'
+    hits_empty: '未找到與「${query}」相關的內容'
     hits_stats: '找到 ${hits} 篇文章'
+    indexed_stats: '共收錄 ${total} 篇文章'
+    load_error: '搜尋索引載入失敗'
+    retry: '重試'
+    show_more: '展開其餘 ${remaining} 篇結果'
 
 pagination:
   prev: 上一頁

@@ -69,11 +69,12 @@ if hexo-config('mermaid.enable')
     text-align: center
 
     & > svg
-      height: 100%
+      max-width: 100%
+      height: auto
 
-  if hexo-config('mermaid.code_write')
-    pre > code.mermaid
-      display: none
+    & > svg[aria-roledescription^="flowchart"] .node > rect
+      rx: 8px
+      ry: 8px
 
 if hexo-config('chartjs.enable')
   .chartjs-container
