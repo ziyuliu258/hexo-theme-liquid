@@ -70,7 +70,7 @@ liquid:
 
   glass:
     enable: true          # 是否加载玻璃折射脚本
-    refraction: true      # 仅桌面 Chromium 生效；其他浏览器回退到 CSS 玻璃
+    refraction: true      # 支持的 Chromium 浏览器使用 SVG 背景折射
 
   aside_motion:
     enable: true          # 单双栏切换时侧栏文字浮现动画
@@ -243,6 +243,11 @@ lightbox: viewer
 ```
 
 深色模式参数在 `[data-theme='dark']` 中。站点级别的小改动优先放到 `liquid.assets.css`，不要直接改主题。
+
+
+图片背景模式下，浮动导航在支持 WebGL 的浏览器（包括 Edge）中使用液态折射。WebGL 渲染失败时会回退到 CSS 玻璃，开启系统的「减少透明度」时会关闭折射。
+
+主题内置 Font Awesome 6.7.2。可通过 `CDN.option` 指定版本固定的镜像地址，通过 `CDN.fallback` 为同名资源指定本站回退路径。字体样式的镜像和回退分别由 `font_link` 和 `font_fallback` 配置。
 
 ## 目录结构
 

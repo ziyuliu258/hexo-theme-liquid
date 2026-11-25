@@ -11,7 +11,7 @@ hexo.extend.filter.register('before_generate', () => {
   for (const key of ['katex', 'katex_copytex']) {
     if (!asset[key]) continue
     asset[key] = asset[key]
-      .replace(/((?:cdn\.jsdelivr\.net\/npm|unpkg\.com)\/katex)(?:@[^/]+)?\//, `$1@${version}/`)
+      .replace(/((?:cdn\.(?:jsdelivr\.net|jsdmirror\.com)\/npm|unpkg\.com)\/katex)(?:@[^/]+)?\//, `$1@${version}/`)
       .replace(/(cdnjs\.cloudflare\.com\/ajax\/libs\/KaTeX\/)[^/]+\//, `$1${version}/`)
   }
 }, 20)

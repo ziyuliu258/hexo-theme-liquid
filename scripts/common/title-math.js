@@ -30,7 +30,7 @@ function collectMathTitles(posts) {
   return titles
 }
 
-function renderMathTitles(data, titles, stylesheet) {
+function renderMathTitles(data, titles, stylesheet, fallback) {
   if (![...titles.keys()].some(title => data.includes(escapeHTML(title)))) return data
 
   const $ = cheerio.load(data, { decodeEntities: false })
@@ -67,7 +67,9 @@ function renderMathTitles(data, titles, stylesheet) {
   if (!changed) return data
 
   if (renderedMath && stylesheet && !$('link').toArray().some(node => $(node).attr('href') === stylesheet)) {
-    $('head').append($('<link rel="stylesheet">').attr('href', stylesheet))
+    const link = $('<link rel="stylesheet">').attr('href', stylesheet)
+    if (fallback) link.attr('onerror', 'this.onerror=null;this.href=' + JSON.stringify(fallback))
+    $('head').append(link)
   }
   return $.html()
 }

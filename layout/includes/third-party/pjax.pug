@@ -12,9 +12,9 @@ if choose
   if choose.includes('Utterances') || choose.includes('Giscus')
     - pjaxSelectors.unshift('link[rel="canonical"]')
 
-script(src=url_for(theme.asset.pjax))
 script.
-  (() => {
+  (async () => {
+    await btf.getScript('!{url_for(theme.asset.pjax)}')
     const pjaxSelectors = !{JSON.stringify(pjaxSelectors)}
 
     window.pjax = new Pjax({

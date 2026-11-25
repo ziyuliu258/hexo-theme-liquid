@@ -7,8 +7,18 @@ hexo.extend.helper.register('inject_head_js', function () {
   const { theme_color } = hexo.theme.config
   const themeColorLight = theme_color && theme_color.enable ? theme_color.meta_theme_color_light : '#ffffff'
   const themeColorDark = theme_color && theme_color.enable ? theme_color.meta_theme_color_dark : '#0d0d0d'
+  const resourceFallbacks = {}
+  for (const [key, local] of Object.entries(this.theme.CDN.fallback || {})) {
+    if (this.theme.asset[key]) resourceFallbacks[this.url_for(this.theme.asset[key])] = this.url_for(local)
+  }
+  for (const font of [this.theme.font, this.theme.blog_title_font]) {
+    if (typeof font?.font_link === 'string' && font.font_fallback) {
+      resourceFallbacks[this.url_for(font.font_link)] = this.url_for(font.font_fallback)
+    }
+  }
 
   const createCustomJs = () => `
+    const resourceFallbacks = ${JSON.stringify(resourceFallbacks)}
     const saveToLocal = {
       set: (key, value, ttl) => {
         if (!ttl) return
@@ -29,6 +39,12 @@ hexo.extend.helper.register('inject_head_js', function () {
 
     window.btf = {
       saveToLocal,
+      loadCSSFallback: link => {
+        const fallback = resourceFallbacks[link.href]
+        if (!fallback) return false
+        link.href = fallback
+        return true
+      },
       getScript: (url, attr = {}) => new Promise((resolve, reject) => {
         const script = document.createElement('script')
         script.src = url
@@ -37,7 +53,12 @@ hexo.extend.helper.register('inject_head_js', function () {
         script.onload = script.onreadystatechange = () => {
           if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
         }
-        script.onerror = reject
+        script.onerror = error => {
+          const fallback = resourceFallbacks[script.src]
+          script.remove()
+          if (fallback) btf.getScript(fallback, attr).then(resolve, reject)
+          else reject(error)
+        }
         document.head.appendChild(script)
       }),
       getCSS: (url, id) => new Promise((resolve, reject) => {
@@ -48,7 +69,9 @@ hexo.extend.helper.register('inject_head_js', function () {
         link.onload = link.onreadystatechange = () => {
           if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
         }
-        link.onerror = reject
+        link.onerror = error => {
+          if (!btf.loadCSSFallback(link)) reject(error)
+        }
         document.head.appendChild(link)
       }),
       addGlobalFn: (key, fn, name = false, parent = window) => {

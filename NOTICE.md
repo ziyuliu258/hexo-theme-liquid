@@ -15,3 +15,6 @@ Their copyright and license notices are included alongside the assets as
 The on-demand DOCX exporter bundles docx 9.5.1 (MIT); its license is included in
 `source/vendor/extsrc/docx.LICENSE`. The music launcher icon attribution and
 CC BY-SA 3.0 adaptation notice are in `MUSIC-ICON-LICENSE.md`.
+
+The optional bundled fonts and frontend libraries include their upstream
+license files in their respective directories under `source/vendor/`.

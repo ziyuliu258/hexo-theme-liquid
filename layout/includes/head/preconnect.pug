@@ -14,7 +14,7 @@ else
   if internal_provider !== 'local'
     link(rel="preconnect" href=providers[internal_provider])
   if third_party_provider !== 'local'
-  link(rel="preconnect" href=providers[third_party_provider])
+    link(rel="preconnect" href=providers[third_party_provider])
 
 if theme.google_analytics
   link(rel="preconnect" href="//www.google-analytics.com" crossorigin='')
@@ -33,6 +33,9 @@ if theme.microsoft_clarity
     ...(Array.isArray(theme.font && theme.font.font_link) ? theme.font.font_link : (theme.font && theme.font.font_link ? [theme.font.font_link] : [])),
     ...(Array.isArray(theme.blog_title_font && theme.blog_title_font.font_link) ? theme.blog_title_font.font_link : (theme.blog_title_font && theme.blog_title_font.font_link ? [theme.blog_title_font.font_link] : []))
   ]
+if preconnectFontLinks.some(href => String(href).startsWith('https://cdn.jsdmirror.com/'))
+  link(rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin='')
+
 if preconnectFontLinks.some(href => String(href).indexOf('//fonts.googleapis.com') != -1)
   link(rel="preconnect" href="//fonts.googleapis.com" crossorigin='')
   link(rel="preconnect" href="//fonts.gstatic.com" crossorigin='')

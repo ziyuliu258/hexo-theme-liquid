@@ -75,7 +75,7 @@ liquid:
 
   glass:
     enable: true          # load the refraction script
-    refraction: true      # desktop Chromium only; other browsers fall back to CSS glass
+    refraction: true      # SVG backdrop refraction on supported Chromium browsers
 
   aside_motion:
     enable: true          # fade the aside content when switching columns
@@ -243,6 +243,11 @@ Other values: `fancybox` / `medium_zoom`, which require providing the matching `
 ```
 
 Dark-mode values live under `[data-theme='dark']`. Prefer `liquid.assets.css` for site-level changes instead of editing the theme.
+
+
+In image background mode, the floating navigation uses WebGL refraction on supported browsers, including Edge. It falls back to CSS glass when WebGL rendering fails and respects the system's reduced-transparency preference.
+
+The theme bundles Font Awesome 6.7.2. Use `CDN.option` to set a versioned mirror URL and `CDN.fallback` to set a local fallback for the same resource key. For font stylesheets, use `font_link` and `font_fallback`.
 
 ## Directory structure
 

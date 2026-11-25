@@ -1069,7 +1069,7 @@ CDN:
     # egjs_infinitegrid:
     # fancybox:
     # fancybox_css:
-    # fontawesome:
+    fontawesome: vendor/fontawesome/css/all.min.css
     # gitalk:
     # gitalk_css:
     # giscus:
@@ -1098,6 +1098,9 @@ CDN:
     # waline_css:
     # waline_js:
 
+  # Optional local replacements for failed CDN.option requests.
+  fallback: {}
+
 # --------------------------------------
 # Liquid Theme Settings
 # All paths are relative to the blog root. The theme prefixes them with
@@ -1112,7 +1115,8 @@ liquid:
   # in source/css/liquid.css; this switch only enables the JS layer.
   glass:
     enable: true
-    # Chromium-only edge refraction. Falls back to CSS glass elsewhere.
+    # SVG backdrop refraction on supported Chromium browsers. The floating
+    # navigation uses WebGL where available, including Edge.
     refraction: true
 
   # Animate the aside when the single/double column button is used.
